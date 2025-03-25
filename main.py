@@ -40,16 +40,16 @@ while running:
     keys = pygame.key.get_pressed()
     if (topBound < player_pos.y) and (player_pos.x==leftBound or player_pos.x== rightBound):
         if keys[pygame.K_w]:
-            player_pos.y -= 300 * dt
+            player_pos.y -= 10
     if (player_pos.y < botBound) and (player_pos.x==leftBound or player_pos.x== rightBound):
         if keys[pygame.K_s]:
-            player_pos.y += 300 * dt
+            player_pos.y += 10
     if (leftBound < player_pos.x) and (player_pos.y==topBound or player_pos.y== botBound):
         if keys[pygame.K_a]:
-            player_pos.x -= 300 * dt
+            player_pos.x -= 10
     if (player_pos.x < rightBound and (player_pos.y==topBound or player_pos.y== botBound)):
         if keys[pygame.K_d]:
-            player_pos.x += 300 * dt
+            player_pos.x += 10
     # flip() the display to put your work on screen
     pygame.display.flip()
 
