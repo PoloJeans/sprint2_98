@@ -9,7 +9,7 @@ clock = pygame.time.Clock()
 #Visual Initialization
 sWidth = screen.get_width()
 sHeight = screen.get_height()
-boardWidth = sHeight-100
+boardWidth = sWidth-100
 boardHeight = sHeight-100
 board = pygame.Rect(0, 0, boardWidth, boardHeight)
 board.center = screen.get_rect().center
@@ -40,16 +40,16 @@ while running:
     keys = pygame.key.get_pressed()
     if (topBound < player_pos.y) and (player_pos.x==leftBound or player_pos.x== rightBound):
         if keys[pygame.K_w]:
-            player_pos.y -= 10
+            player_pos.y -= 5
     if (player_pos.y < botBound) and (player_pos.x==leftBound or player_pos.x== rightBound):
         if keys[pygame.K_s]:
-            player_pos.y += 10
+            player_pos.y += 5
     if (leftBound < player_pos.x) and (player_pos.y==topBound or player_pos.y== botBound):
         if keys[pygame.K_a]:
-            player_pos.x -= 10
+            player_pos.x -= 5
     if (player_pos.x < rightBound and (player_pos.y==topBound or player_pos.y== botBound)):
         if keys[pygame.K_d]:
-            player_pos.x += 10
+            player_pos.x += 5
     # flip() the display to put your work on screen
     pygame.display.flip()
 
