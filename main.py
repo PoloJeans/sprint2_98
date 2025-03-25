@@ -34,15 +34,15 @@ while running:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         player_pos.y -= 300 * dt
-    if keys[pygame.K_s]:
+    elif keys[pygame.K_s]:
         player_pos.y += 300 * dt
-    if keys[pygame.K_a]:
+    elif keys[pygame.K_a]:
         player_pos.x -= 300 * dt
-    if keys[pygame.K_d]:
+    elif keys[pygame.K_d]:
         player_pos.x += 300 * dt
     # flip() the display to put your work on screen
     pygame.display.flip()
 
-    clock.tick(120)  # limits FPS to 60
+    clock.tick(120)  # limits FPS to 120
 
 pygame.quit()
