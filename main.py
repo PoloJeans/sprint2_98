@@ -4,12 +4,18 @@ import pygame
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
-clock = pygame.time.Clock()
 running = True
+clock = pygame.time.Clock()
+#Visual Initialization
+sWidth = screen.get_width()
+sHeight = screen.get_height()
+board = pygame.Rect(0, 0, sHeight-100, sHeight-100)
+board.center = screen.get_rect().center
+#Variable Setup
 dt = 0.01
 hp = 3
 
-player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+player_pos = pygame.Vector2(sWidth/2, sHeight/2)
 
 while running:
     # poll for events
@@ -19,11 +25,11 @@ while running:
             running = False
 
     # fill the screen with a color to wipe away anything from last frame
-    screen.fill("pink")
+    screen.fill("black")
 
     # RENDER YOUR GAME HERE
-    pygame.draw.circle(screen, "green", player_pos, 40)
-    pygame.draw.rect(screen, "purple", (100,100,100,100))
+    pygame.draw.rect(screen, "green", board, 2)
+    pygame.draw.circle(screen, "red", player_pos, 20)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
