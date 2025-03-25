@@ -1,5 +1,6 @@
 # Example file showing a basic pygame "game loop"
 import pygame
+import pygame.image
 
 # pygame setup
 pygame.init()
@@ -13,6 +14,10 @@ boardWidth = sWidth-100
 boardHeight = sHeight-100
 board = pygame.Rect(0, 0, boardWidth, boardHeight)
 board.center = screen.get_rect().center
+img = pygame.image.load("IMG_1343.WEBP")
+pygame.mixer.music.load("246940-9197049f-e352-4a71-bdea-9303e664c54d.mp3")
+pygame.mixer.music.play(100,0,0)
+
 
 #Variable Setup
 dt = 0.01
@@ -32,10 +37,11 @@ while running:
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("black")
-
+    screen.blit(pygame.transform.scale(img, (300, 300)), (screen.get_rect().centerx, screen.get_rect().centery))
     # RENDER YOUR GAME HERE
     pygame.draw.rect(screen, "green", board, 2)
     pygame.draw.circle(screen, "red", player_pos, 20)
+    
 
     keys = pygame.key.get_pressed()
     if (topBound < player_pos.y) and (player_pos.x==leftBound or player_pos.x== rightBound):
