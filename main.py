@@ -37,7 +37,7 @@ while running:
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("black")
-    screen.blit(pygame.transform.scale(img, (300,394)), (screen.get_rect().centerx, screen.get_rect().centery))
+    screen.blit(pygame.transform.scale(img, (300,394)), (screen.get_rect().centerx - pygame.transform.scale(img, (300,394)).get_rect().centerx, screen.get_rect().centery/2 -  pygame.transform.scale(img, (300,394)).get_rect().centery/2))
     # RENDER YOUR GAME HERE
     pygame.draw.rect(screen, "green", board, 2)
     pygame.draw.circle(screen, "red", player_pos, 20)
