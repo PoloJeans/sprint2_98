@@ -9,13 +9,19 @@ clock = pygame.time.Clock()
 #Visual Initialization
 sWidth = screen.get_width()
 sHeight = screen.get_height()
-board = pygame.Rect(0, 0, sHeight-100, sHeight-100)
+boardWidth = sHeight-100
+boardHeight = sHeight-100
+board = pygame.Rect(0, 0, boardWidth, boardHeight)
 board.center = screen.get_rect().center
+
 #Variable Setup
 dt = 0.01
 hp = 3
-
-player_pos = pygame.Vector2(sWidth/2, sHeight/2)
+leftBound = board.centerx - boardWidth/2
+rightBound = board.centerx + boardWidth/2
+topBound = board.centery - boardHeight/2
+botBound = board.centery + boardHeight/2
+player_pos = pygame.Vector2(board.centerx, botBound )
 
 while running:
     # poll for events
@@ -32,14 +38,18 @@ while running:
     pygame.draw.circle(screen, "red", player_pos, 20)
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        player_pos.y -= 300 * dt
-    elif keys[pygame.K_s]:
-        player_pos.y += 300 * dt
-    elif keys[pygame.K_a]:
-        player_pos.x -= 300 * dt
-    elif keys[pygame.K_d]:
-        player_pos.x += 300 * dt
+    if (topBound < player_pos.y) and (player_pos.x==leftBound or player_pos.x== rightBound):
+        if keys[pygame.K_w]:
+            player_pos.y -= 300 * dt
+    if (player_pos.y < botBound) and (player_pos.x==leftBound or player_pos.x== rightBound):
+        if keys[pygame.K_s]:
+            player_pos.y += 300 * dt
+    if (leftBound < player_pos.x) and (player_pos.y==topBound or player_pos.y== botBound):
+        if keys[pygame.K_a]:
+            player_pos.x -= 300 * dt
+    if (player_pos.x < rightBound and (player_pos.y==topBound or player_pos.y== botBound)):
+        if keys[pygame.K_d]:
+            player_pos.x += 300 * dt
     # flip() the display to put your work on screen
     pygame.display.flip()
 
