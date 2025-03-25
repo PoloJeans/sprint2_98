@@ -7,6 +7,7 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 dt = 0.01
+hp = 3
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
@@ -22,6 +23,7 @@ while running:
 
     # RENDER YOUR GAME HERE
     pygame.draw.circle(screen, "green", player_pos, 40)
+    pygame.draw.rect(screen, "purple", (100,100,100,100))
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
