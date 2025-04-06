@@ -1,48 +1,39 @@
 # Example file showing a basic pygame "game loop"
 import pygame
+from entity.player import *
+from entity.board import *
+from entity.qix import *
+from entity.sparc import *
 
-# pygame setup
-pygame.init()
 screen = pygame.display.set_mode((1280, 720))
-running = True
-clock = pygame.time.Clock()
-#Visual Initialization
-sWidth = screen.get_width()
-sHeight = screen.get_height()
-board = pygame.Rect(0, 0, sHeight-100, sHeight-100)
-board.center = screen.get_rect().center
-#Variable Setup
-dt = 0.01
-hp = 3
+board = Board(screen.get_height()-100, screen.get_height()-100, screen)
+player = Player()
 
-player_pos = pygame.Vector2(sWidth/2, sHeight/2)
+def placecholderentityfunction():
+    board.draw(screen)
+    player.draw(screen)
+    # handles player, qix, and sparc movement on the board, probably branches into collision checking 
+    # and incursion
 
-while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+def mqix():
+    # pygame setup
+    pygame.init()
+    running = True
+    clock = pygame.time.Clock()
 
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("black")
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        screen.fill("black")
+               
+        #entity management function
+        placecholderentityfunction()
 
-    # RENDER YOUR GAME HERE
-    pygame.draw.rect(screen, "green", board, 2)
-    pygame.draw.circle(screen, "red", player_pos, 20)
+        # flip() the display to put your work on screen
+        pygame.display.flip()
+        clock.tick(120) # limits FPS to 120
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        player_pos.y -= 300 * dt
-    if keys[pygame.K_s]:
-        player_pos.y += 300 * dt
-    if keys[pygame.K_a]:
-        player_pos.x -= 300 * dt
-    if keys[pygame.K_d]:
-        player_pos.x += 300 * dt
-    # flip() the display to put your work on screen
-    pygame.display.flip()
+    pygame.quit()
 
-    clock.tick(120)  # limits FPS to 60
-
-pygame.quit()
+mqix()
