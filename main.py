@@ -55,7 +55,7 @@ def mqix():
                                 board.next -= 1
                     elif board.coords[board.prev - 1][0] > board.coords[board.prev][0]:
                         if keys[pygame.K_d]:
-                                player.x += 10
+                                player.ax += 10
                                 board.prev -= 1
                                 board.next -= 1
             if board.coords[board.prev][0] == board.coords[board.next][0]:
