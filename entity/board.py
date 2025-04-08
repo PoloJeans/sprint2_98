@@ -5,7 +5,7 @@ class Board():
     def __init__(self, width, height, screen):
         self.rect = pygame.Rect(0, 0, width, height)
         self.rect.center = screen.get_rect().center
-        incursionArray = []
+        self.coords = list() 
     
     def setDim(self, width, height, screen):
         self.rect.update(0, 0, width, height)
