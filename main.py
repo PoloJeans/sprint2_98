@@ -35,7 +35,29 @@ def mqix():
             push = True
         
         if not push:
-
+            if player.getPos() == board.coords[board.prev]:
+                #FINISH THIS PART
+                if (player.getPos() == board.coords[board.prev]):
+                    if board.coords[board.prev-1][1] < board.coords[board.prev][1]:
+                        if keys[pygame.K_w]:
+                            player.y -= 10
+                            board.prev -= 1
+                            board.next -= 1
+                    elif board.coords[board.prev - 1][1] > board.coords[board.prev][1]:
+                        if keys[pygame.K_s]:
+                                player.y += 10
+                                board.prev -= 1
+                                board.next -= 1
+                    elif board.coords[board.prev - 1][0] < board.coords[board.prev][0]:
+                        if keys[pygame.K_a]:
+                                player.x += 10
+                                board.prev -= 1
+                                board.next -= 1
+                    elif board.coords[board.prev - 1][0] > board.coords[board.prev][0]:
+                        if keys[pygame.K_d]:
+                                player.x += 10
+                                board.prev -= 1
+                                board.next -= 1
             if board.coords[board.prev][0] == board.coords[board.next][0]:
                 if keys[pygame.K_w]:
                     player.y -= 10
