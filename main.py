@@ -1,64 +1,115 @@
 # Example file showing a basic pygame "game loop"
 import pygame
+
+from entity.player import *
+from entity.board import *
+from entity.qix import *
+from entity.sparc import *
+
 import pygame.image
 
-# pygame setup
-pygame.init()
+
 screen = pygame.display.set_mode((1280, 720))
-running = True
-clock = pygame.time.Clock()
-#Visual Initialization
-sWidth = screen.get_width()
-sHeight = screen.get_height()
-boardWidth = sWidth-100
-boardHeight = sHeight-100
-board = pygame.Rect(0, 0, boardWidth, boardHeight)
-board.center = screen.get_rect().center
-img = pygame.image.load("IMG_1343.WEBP")
-pygame.mixer.music.load("246940-9197049f-e352-4a71-bdea-9303e664c54d.mp3")
-pygame.mixer.music.play(100,0,0)
+
+board = Board([(100, screen.get_height() - 100), (screen.get_width() - 100, screen.get_height() - 100),(screen.get_width() - 100, 100),(100, 100)], screen)
+player = Player(screen.get_width()/2, screen.get_height() -100)
+
+def placecholderentityfunction():
+    board.draw(screen)
+    player.draw(screen)
+    # handles player, qix, and sparc movement on the board, probably branches into collision checking 
+    # and incursion
+
+def mqix():
+    # pygame setup
+    pygame.init()
+    running = True
+    clock = pygame.time.Clock()
+    push = False
+    next = 1
+    prev = 0
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        screen.fill("black")
+
+        board.draw(screen)
+        player.draw(screen)
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]:
+            first = (player.x, player.y)
+            push = True
+        
+        if not push:
+            if player.getPos() == board.coords[prev]:            
+                if board.coords[(prev - 1) % 4][1] < board.coords[prev][1]:
+                    if keys[pygame.K_w]:
+                        player.y -= 10
+                        prev = (prev - 1) % 4
+                        next = (next - 1) % 4
+                elif board.coords[(prev - 1) % 4][1] > board.coords[prev][1]:
+                    if keys[pygame.K_s]:
+                            player.y += 10
+                            prev = (prev - 1) % 4
+                            next = (next - 1) % 4
+                elif board.coords[(prev - 1) % 4][0] < board.coords[prev][0]:
+                    if keys[pygame.K_a]:
+                            player.x -= 10
+                            prev = (prev - 1) % 4
+                            next = (next - 1) % 4
+                elif board.coords[(prev - 1) % 4][0] > board.coords[prev][0]:
+                    if keys[pygame.K_d]:
+                            player.x += 10
+                            prev = (prev - 1) % 4
+                            next = (next - 1) % 4
+
+            elif player.getPos() == board.coords[next]:
+                #FINISH THIS PART
+            
+                if board.coords[(next +1) % 4][1] < board.coords[next][1]:
+                    if keys[pygame.K_w]:
+                        player.y -= 10
+                        prev = (prev + 1) % 4
+                        next = (next + 1) % 4
+                elif board.coords[(next +1) % 4][1] > board.coords[next][1]:
+                    if keys[pygame.K_s]:
+                            player.y += 10
+                            prev = (prev + 1) % 4
+                            next = (next + 1) % 1
+                elif board.coords[(next +1) % 4][0] < board.coords[next][0]:
+                    if keys[pygame.K_a]:
+                            player.x -= 10
+                            prev = (prev + 1) % 4
+                            next = (next + 1) % 4
+                elif board.coords[(next +1) % 4][0] > board.coords[next][0]:
+                    if keys[pygame.K_d]:
+                            player.x += 10
+                            prev = (prev + 1) % 4
+                            next = (next + 1) % 4
 
 
-#Variable Setup
-dt = 0.01
-hp = 3
-leftBound = board.centerx - boardWidth/2
-rightBound = board.centerx + boardWidth/2
-topBound = board.centery - boardHeight/2
-botBound = board.centery + boardHeight/2
-player_pos = pygame.Vector2(board.centerx, botBound )
+            elif board.coords[prev][0] == board.coords[next][0] and ((player.y > board.coords[prev][1] and player.y < board.coords[next][1]) or (player.y < board.coords[prev][1] and player.y > board.coords[next][1])):
+                if keys[pygame.K_w]:
+                    player.y -= 10
+                elif keys[pygame.K_s]:
+                    player.y += 10
+                    
+            elif board.coords[prev][1] == board.coords[next][1] and ((player.x > board.coords[prev][0] and player.x < board.coords[next][0]) or (player.x < board.coords[prev][0] and player.x > board.coords[next][0])):
+                if keys[pygame.K_a]:
+                    player.x -= 10
+                elif keys[pygame.K_d]:
+                    player.x += 10
 
-while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+                
+        
+        #entity management function
+        
 
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("black")
-    screen.blit(pygame.transform.scale(img, (300,394)), (screen.get_rect().centerx - pygame.transform.scale(img, (300,394)).get_rect().centerx, screen.get_rect().centery/2 -  pygame.transform.scale(img, (300,394)).get_rect().centery/2))
-    # RENDER YOUR GAME HERE
-    pygame.draw.rect(screen, "green", board, 2)
-    pygame.draw.circle(screen, "red", player_pos, 20)
-    
+        # flip() the display to put your work on screen
+        pygame.display.flip()
+        clock.tick(120) # limits FPS to 120
 
-    keys = pygame.key.get_pressed()
-    if (topBound < player_pos.y) and (player_pos.x==leftBound or player_pos.x== rightBound):
-        if keys[pygame.K_w]:
-            player_pos.y -= 5
-    if (player_pos.y < botBound) and (player_pos.x==leftBound or player_pos.x== rightBound):
-        if keys[pygame.K_s]:
-            player_pos.y += 5
-    if (leftBound < player_pos.x) and (player_pos.y==topBound or player_pos.y== botBound):
-        if keys[pygame.K_a]:
-            player_pos.x -= 5
-    if (player_pos.x < rightBound and (player_pos.y==topBound or player_pos.y== botBound)):
-        if keys[pygame.K_d]:
-            player_pos.x += 5
-    # flip() the display to put your work on screen
-    pygame.display.flip()
+    pygame.quit()
 
-    clock.tick(120)  # limits FPS to 120
-
-pygame.quit()
+mqix()
