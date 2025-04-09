@@ -11,8 +11,8 @@ import pygame.image
 
 screen = pygame.display.set_mode((1280, 720))
 
-board = Board([(100, screen.get_height() - 100), (screen.get_width() - 100, screen.get_height() - 100),(screen.get_width() - 100, 100),(100, 100)], screen)
-player = Player(screen.get_width()/2, screen.get_height() -100)
+board = Board([(100, screen.get_height() - 100),(150, screen.get_height() - 100), (150, screen.get_height() - 300), (300, screen.get_height() - 300), (300, screen.get_height() - 100), (screen.get_width() - 100, screen.get_height() - 100),(screen.get_width() - 100, 100),(100, 100)], screen)
+player = Player(110, screen.get_height() - 100)
 
 def placecholderentityfunction():
     board.draw(screen)
@@ -37,56 +37,72 @@ def mqix():
         board.draw(screen)
         player.draw(screen)
         keys = pygame.key.get_pressed()
+        length = len(board.coords)
+        #Trigger for push
         if keys[pygame.K_SPACE]:
             first = (player.x, player.y)
             push = True
-        
+        """
+        Base edge movement implementation
+        3----------2
+        |          |
+        |          |
+        |          |
+        0----------1
+        Prev = 0
+        Next = 1
+
+        The board is drawn from a list of the form [(x,y)], representing 
+        the vertices of the board. When the player reaches a vertice, they have the option 
+        to move either onto the next edge and increment prev and next pointers, restricting their 
+        movement to the new edge, or back to the previous edge, and restricting to that edge. 
+        """
         if not push:
             if player.getPos() == board.coords[prev]:            
-                if board.coords[(prev - 1) % 4][1] < board.coords[prev][1]:
+                if board.coords[(prev - 1) % length][1] < board.coords[prev][1]:
                     if keys[pygame.K_w]:
                         player.y -= 10
-                        prev = (prev - 1) % 4
-                        next = (next - 1) % 4
-                elif board.coords[(prev - 1) % 4][1] > board.coords[prev][1]:
+                        prev = (prev - 1) % length
+                        next = (next - 1) % length
+                elif board.coords[(prev - 1) % length][1] > board.coords[prev][1]:
                     if keys[pygame.K_s]:
                             player.y += 10
-                            prev = (prev - 1) % 4
-                            next = (next - 1) % 4
-                elif board.coords[(prev - 1) % 4][0] < board.coords[prev][0]:
+                            prev = (prev - 1) % length
+                            next = (next - 1) % length
+                elif board.coords[(prev - 1) % length][0] < board.coords[prev][0]:
                     if keys[pygame.K_a]:
                             player.x -= 10
-                            prev = (prev - 1) % 4
-                            next = (next - 1) % 4
-                elif board.coords[(prev - 1) % 4][0] > board.coords[prev][0]:
+                            prev = (prev - 1) % length
+                            next = (next - 1) % length
+                elif board.coords[(prev - 1) % length][0] > board.coords[prev][0]:
                     if keys[pygame.K_d]:
                             player.x += 10
-                            prev = (prev - 1) % 4
-                            next = (next - 1) % 4
+                            prev = (prev - 1) % length
+                            next = (next - 1) % length
 
             elif player.getPos() == board.coords[next]:
                 #FINISH THIS PART
             
-                if board.coords[(next +1) % 4][1] < board.coords[next][1]:
+                if board.coords[(next +1) % length][1] < board.coords[next][1]:
                     if keys[pygame.K_w]:
                         player.y -= 10
-                        prev = (prev + 1) % 4
-                        next = (next + 1) % 4
-                elif board.coords[(next +1) % 4][1] > board.coords[next][1]:
+                        prev = (prev + 1) % length
+                        next = (next + 1) % length
+                elif board.coords[(next +1) % length][1] > board.coords[next][1]:
                     if keys[pygame.K_s]:
                             player.y += 10
-                            prev = (prev + 1) % 4
-                            next = (next + 1) % 1
-                elif board.coords[(next +1) % 4][0] < board.coords[next][0]:
+                            prev = (prev + 1) % length
+                            next = (next + 1) % length
+                elif board.coords[(next +1) % length][0] < board.coords[next][0]:
                     if keys[pygame.K_a]:
                             player.x -= 10
-                            prev = (prev + 1) % 4
-                            next = (next + 1) % 4
-                elif board.coords[(next +1) % 4][0] > board.coords[next][0]:
+                            prev = (prev + 1) % length
+                            next = (next + 1) % length
+                elif board.coords[(next +1) % length][0] > board.coords[next][0]:
                     if keys[pygame.K_d]:
                             player.x += 10
-                            prev = (prev + 1) % 4
-                            next = (next + 1) % 4
+                            prev = (prev + 1) % length
+                            next = (next + 1) % length
 
 
             elif board.coords[prev][0] == board.coords[next][0] and ((player.y > board.coords[prev][1] and player.y < board.coords[next][1]) or (player.y < board.coords[prev][1] and player.y > board.coords[next][1])):
