@@ -1,11 +1,16 @@
 # Example file showing a basic pygame "game loop"
 import pygame
+
 from entity.player import *
 from entity.board import *
 from entity.qix import *
 from entity.sparc import *
 
+import pygame.image
+
+
 screen = pygame.display.set_mode((1280, 720))
+
 board = Board([(100, screen.get_height() - 100), (screen.get_width() - 100, screen.get_height() - 100),(screen.get_width() - 100, 100),(100, 100)], screen)
 player = Player(screen.get_width()/2, screen.get_height() -100)
 
