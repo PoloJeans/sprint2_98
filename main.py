@@ -13,10 +13,12 @@ screen = pygame.display.set_mode((1280, 720))
 
 board = Board([(100, screen.get_height() - 100), (screen.get_width() - 100, screen.get_height() - 100),(screen.get_width() - 100, 100),(100, 100)], screen)
 player = Player(screen.get_width()/2, screen.get_height() -100)
+sparc = Sparc(screen.get_width()/2, 100)
 
 def placecholderentityfunction():
     board.draw(screen)
     player.draw(screen)
+    sparc.draw(screen)
     # handles player, qix, and sparc movement on the board, probably branches into collision checking 
     # and incursion
 
@@ -28,6 +30,7 @@ def mqix():
     push = False
     next = 1
     prev = 0
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -36,6 +39,7 @@ def mqix():
 
         board.draw(screen)
         player.draw(screen)
+        length = len(board.coords)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
             first = (player.x, player.y)
@@ -43,50 +47,49 @@ def mqix():
         
         if not push:
             if player.getPos() == board.coords[prev]:            
-                if board.coords[(prev - 1) % 4][1] < board.coords[prev][1]:
+                if board.coords[(prev - 1) % length][1] < board.coords[prev][1]:
                     if keys[pygame.K_w]:
                         player.y -= 10
-                        prev = (prev - 1) % 4
-                        next = (next - 1) % 4
-                elif board.coords[(prev - 1) % 4][1] > board.coords[prev][1]:
+                        prev = (prev - 1) % length
+                        next = (next - 1) % length
+                elif board.coords[(prev - 1) % length][1] > board.coords[prev][1]:
                     if keys[pygame.K_s]:
                             player.y += 10
-                            prev = (prev - 1) % 4
-                            next = (next - 1) % 4
-                elif board.coords[(prev - 1) % 4][0] < board.coords[prev][0]:
+                            prev = (prev - 1) % length
+                            next = (next - 1) % length
+                elif board.coords[(prev - 1) % length][0] < board.coords[prev][0]:
                     if keys[pygame.K_a]:
                             player.x -= 10
-                            prev = (prev - 1) % 4
-                            next = (next - 1) % 4
-                elif board.coords[(prev - 1) % 4][0] > board.coords[prev][0]:
+                            prev = (prev - 1) % length
+                            next = (next - 1) % length
+                elif board.coords[(prev - 1) % length][0] > board.coords[prev][0]:
                     if keys[pygame.K_d]:
                             player.x += 10
-                            prev = (prev - 1) % 4
-                            next = (next - 1) % 4
+                            prev = (prev - 1) % length
+                            next = (next - 1) % length
 
             elif player.getPos() == board.coords[next]:
-                #FINISH THIS PART
-            
-                if board.coords[(next +1) % 4][1] < board.coords[next][1]:
+                
+                if board.coords[(next +1) % length][1] < board.coords[next][1]:
                     if keys[pygame.K_w]:
                         player.y -= 10
-                        prev = (prev + 1) % 4
-                        next = (next + 1) % 4
-                elif board.coords[(next +1) % 4][1] > board.coords[next][1]:
+                        prev = (prev + 1) % length
+                        next = (next + 1) % length
+                elif board.coords[(next +1) % length][1] > board.coords[next][1]:
                     if keys[pygame.K_s]:
                             player.y += 10
-                            prev = (prev + 1) % 4
+                            prev = (prev + 1) % length
                             next = (next + 1) % 1
-                elif board.coords[(next +1) % 4][0] < board.coords[next][0]:
+                elif board.coords[(next +1) % length][0] < board.coords[next][0]:
                     if keys[pygame.K_a]:
                             player.x -= 10
-                            prev = (prev + 1) % 4
-                            next = (next + 1) % 4
-                elif board.coords[(next +1) % 4][0] > board.coords[next][0]:
+                            prev = (prev + 1) % length
+                            next = (next + 1) % length
+                elif board.coords[(next +1) % length][0] > board.coords[next][0]:
                     if keys[pygame.K_d]:
                             player.x += 10
-                            prev = (prev + 1) % 4
-                            next = (next + 1) % 4
+                            prev = (prev + 1) % length
+                            next = (next + 1) % length
 
 
             elif board.coords[prev][0] == board.coords[next][0] and ((player.y > board.coords[prev][1] and player.y < board.coords[next][1]) or (player.y < board.coords[prev][1] and player.y > board.coords[next][1])):
@@ -101,7 +104,11 @@ def mqix():
                 elif keys[pygame.K_d]:
                     player.x += 10
 
-                
+        else:
+            sparc.draw(screen)
+            
+             
+
         
         #entity management function
         
