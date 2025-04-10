@@ -4,7 +4,19 @@ from entity.Entity import Entity
 class Player(Entity):
     def __init__(self, x, y, prev, next):
         super().__init__(x, y, prev, next)
+        self.health = 50
         
+        
+
+    def setHealth(self, health):
+        self.health = health
+
+    def getHealth(self):
+        return self.health
+    
+    def getPos(self):
+        return (self.x, self.y)
+
     def draw(self, screen):
         pygame.draw.circle(screen, "red", (self.x, self.y), 20)
 
@@ -50,6 +62,7 @@ class Player(Entity):
                     self.y -= 10
                     self.prev = (self.prev - 1) % length
                     self.next = (self.next - 1) % length
+                    
                 elif board.coords[self.next][0] > self.getPos()[0]:
                     if keys[pygame.K_d]:
                         self.x += 10
