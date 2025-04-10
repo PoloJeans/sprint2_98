@@ -9,11 +9,17 @@ from entity.sparc import *
 import pygame.image
 
 
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((640, 720), pygame.SHOWN | pygame.RESIZABLE)
 
 #Initialise the board using a list of tuple coordinates (x,y)
-board = Board([(100, screen.get_height() - 100), (150, screen.get_height() - 100), (150, screen.get_height() - 300), (300, screen.get_height() - 300), (300, screen.get_height() - 100), (screen.get_width() - 100, screen.get_height() - 100), (screen.get_width() - 100, 100), (100, 100)], screen)
-player = Player(110, screen.get_height() - 100, 0, 1)
+board = Board([(100, screen.get_height() - 100),
+            (150, screen.get_height() - 100),
+            (150, screen.get_height() - 300),
+            (300, screen.get_height() - 300),
+            (300, screen.get_height() - 100),
+            (screen.get_width() - 100, screen.get_height() - 100),
+            (screen.get_width() - 100, 100), (100, 100)], screen)
+player = Player(100, (screen.get_height() - 100), 0, 1)
 
 
 def placecholderentityfunction():
@@ -31,11 +37,15 @@ def mqix():
     push = False
     next = 1
     prev = 0
+    left = False
 
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                print("prev:" + str(player.prev) + ", " + str(board.coords[player.prev][0]) + ", " + str(board.coords[player.prev][1]))
+                print("next:" + str(player.next) + ", " + str(board.coords[player.next][0]) + ", " + str(board.coords[player.next][1]))
+                print("Player Pos: " + str(player.getPos()[0]) + ", " + str(player.getPos()[1]))
         screen.fill("black")
 
         board.draw(screen)
@@ -45,15 +55,37 @@ def mqix():
         length = len(board.coords)
         
         #Trigger for push
-        if keys[pygame.K_SPACE]:
+        
+        
+        if push == False:
+          
+          player.edgeMove(board, keys)
+          if keys[pygame.K_SPACE]:
             first = player.getPos()
             push = True
-        
-        if not push:
-          player.edgeMove(board, keys)
+            left = False
 
         else:
-            sparc.draw(screen)
+            print(push)
+            if board.coords[prev][0] == player.getPos()[0] == board.coords[next][0] and left:
+                push = False 
+                left = False
+            elif board.coords[prev][1] == player.getPos()[1] == board.coords[next][1] and left:
+                push = False
+                left = False
+            elif keys[pygame.K_w]:
+                player.y -= 10
+                left = True
+            elif keys[pygame.K_s]:
+                player.y += 10
+                left = True
+            elif keys[pygame.K_a]:
+                player.x -= 10
+                left = True
+            elif keys[pygame.K_d]:
+                player.x += 10
+                left = True
+            
             
              
 
