@@ -1,10 +1,12 @@
 # Example file showing a basic pygame "game loop"
 import pygame
 
+
 from entity.Player import *
 from entity.Board import *
 from entity.Qix import *
 from entity.Sparc import *
+
 
 import pygame.image
 
@@ -66,8 +68,20 @@ def mqix():
     screen.blit(tempBoard, (100,100))
 
 
+    # Player character
+    pChar = pygame.image.load("red-circle1.png").convert_alpha()
+    #pChar_rect = pChar.get_rect()
+    pChar_mask = pygame.mask.from_surface(pChar)
+    pChar_maskimg = pChar_mask.to_surface()
+
+    tempBoard = pygame.Surface((1084,524))
+    tempBoard.fill("blue")
+    board_mask = pygame.mask.from_surface(tempBoard)
+
+
+    #Run game
     while running:
-        for event in pygame.event.get():
+        for event in pygame.event.get():    
             if event.type == pygame.QUIT:
                 running = False
                 print("prev:" + str(player.prev) + ", " + str(board.coords[player.prev][0]) + ", " + str(board.coords[player.prev][1]))
@@ -75,14 +89,35 @@ def mqix():
                 print("Player Pos: " + str(player.getPos()[0]) + ", " + str(player.getPos()[1]))
         screen.fill("black")
 
+        #Check mask overlap
+        pos = player.getPos()
+        pos = (pos[0]-20, pos[1]-20)
+        outOfBounds = False
+        if pChar_mask.overlap(board_mask, (pos[0]-1130, pos[1]-570)):
+            outOfBounds = False
+            col = "aliceblue"
+        else: 
+            col = "blue"
+            outOfBounds = True
+
+
+        #Display Masks
+        screen.blit(pChar_maskimg, pos)
+        tempBoard.fill(col)
+        screen.blit(tempBoard, (100,100))
+
+
         board.draw(screen)
         player.draw(screen)
         length = len(board.coords)
         keys = pygame.key.get_pressed()
         length = len(board.coords)
+
         
+
         #Trigger for push
         
+
         
         if push == False:
           
@@ -113,7 +148,7 @@ def mqix():
                 player.x += 10
                 left = True
             
-            
+
              
 
         
