@@ -2,9 +2,9 @@
 import pygame
 
 from entity.Player import *
-from entity.board import *
-from entity.qix import *
-from entity.sparc import *
+from entity.Board import *
+from entity.Qix import *
+from entity.Sparc import *
 
 import pygame.image
 
