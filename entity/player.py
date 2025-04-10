@@ -7,6 +7,17 @@ class Player(Entity):
         
     def draw(self, screen):
         pygame.draw.circle(screen, "red", (self.x, self.y), 20)
+
+    def collision(sparc, qix):
+        playerPos = super().getPos()
+        sparcPos = sparc.getPos()
+        qixPos = qix.getPos()
+
+        # Check if x is within 10 pixels of each enemey
+
+        # Check if y is within 10 pixels of each enemey
+        
+    
     """
     Base edge movement implementation
     3----------2

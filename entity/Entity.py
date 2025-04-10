@@ -17,6 +17,12 @@ class Entity():
     def getPos(self):
         return (self.x, self.y)
     
+    def getX(self):
+        return self.x
+    
+    def getY(self):
+        return self.y
+    
     def setPos(self, x, y):
         self.x = x
         self.y = y

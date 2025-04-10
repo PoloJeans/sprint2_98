@@ -15,6 +15,8 @@ screen = pygame.display.set_mode((1280, 720))
 #Initialise the board using a list of tuple coordinates (x,y)
 board = Board([(100, screen.get_height() - 100), (150, screen.get_height() - 100), (150, screen.get_height() - 300), (300, screen.get_height() - 300), (300, screen.get_height() - 100), (screen.get_width() - 100, screen.get_height() - 100), (screen.get_width() - 100, 100), (100, 100)], screen)
 player = Player(110, screen.get_height() - 100, 0, 1)
+qix = Qix(screen.get_width() / 2, screen.get_height() / 2, 0, 1)
+sparc = Sparc(screen.get_width() / 2, screen.get_height() - 620, 0, 1)
 
 
 def placecholderentityfunction():
@@ -39,12 +41,20 @@ def mqix():
                 running = False
         screen.fill("black")
 
+        # Draw out all entities
         board.draw(screen)
         player.draw(screen)
+        qix.draw(screen)
+        sparc.draw(screen)
+
         length = len(board.coords)
         keys = pygame.key.get_pressed()
         length = len(board.coords)
         
+        # Collision checker
+        if player.collision(sparc, qix):
+
+
         #Trigger for push
         if keys[pygame.K_SPACE]:
             first = player.getPos()
