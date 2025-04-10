@@ -2,23 +2,24 @@
 import pygame
 
 from entity.Player import *
-from entity.board import *
-from entity.qix import *
-from entity.sparc import *
+from entity.Board import *
+from entity.Qix import *
+from entity.Sparc import *
 
 import pygame.image
 
 
 screen = pygame.display.set_mode((640, 720), pygame.SHOWN | pygame.RESIZABLE)
-
+botleft = (100, screen.get_height() - 100)
+botright = (screen.get_width() - 100, screen.get_height() - 100)
+topright = (screen.get_width() - 100, 100)
+topleft = (100, 100)
 #Initialise the board using a list of tuple coordinates (x,y)
 board = Board([(100, screen.get_height() - 100),
-            (150, screen.get_height() - 100),
-            (150, screen.get_height() - 300),
-            (300, screen.get_height() - 300),
-            (300, screen.get_height() - 100),
+            
             (screen.get_width() - 100, screen.get_height() - 100),
-            (screen.get_width() - 100, 100), (100, 100)], screen)
+            (screen.get_width() - 100, 100), 
+            (100, 100)], screen)
 player = Player(100, (screen.get_height() - 100), 0, 1)
 
 
@@ -35,8 +36,11 @@ def mqix():
     running = True
     clock = pygame.time.Clock()
     push = False
-    
     left = False
+    boardMask = pygame.mask.Mask((screen.get_width(), screen.get_height()))
+    for i in range (topleft[0], topright[0] + 1):
+        for j in range(topleft[1], botleft[1]+1):
+            boardMask.set_at((i,j), 1)
 
     while running:
         for event in pygame.event.get():
@@ -65,7 +69,7 @@ def mqix():
             left = False
 
         else:
-            print(push)
+            pos = player.getPos()
             if board.coords[player.prev][0] == player.getPos()[0] == board.coords[player.next][0] and left:
                 push = False 
                 left = False
@@ -73,17 +77,21 @@ def mqix():
                 push = False
                 left = False
             elif keys[pygame.K_w]:
-                player.y -= 10
-                left = True
+                if boardMask.get_at((pos[0], pos[1] - 10 )) == 1:
+                    player.y -= 10
+                    left = True
             elif keys[pygame.K_s]:
-                player.y += 10
-                left = True
+                if boardMask.get_at((pos[0], pos[1] + 10 )) == 1:
+                    player.y += 10
+                    left = True
             elif keys[pygame.K_a]:
-                player.x -= 10
-                left = True
+                if boardMask.get_at((pos[0] -10 , pos[1])) == 1:
+                    player.x -= 10
+                    left = True
             elif keys[pygame.K_d]:
-                player.x += 10
-                left = True
+                if boardMask.get_at((pos[0] + 10 , pos[1])) == 1:
+                    player.x += 10
+                    left = True
             
             
              
