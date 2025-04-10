@@ -95,7 +95,7 @@ def mqix():
                         board.coords.insert((player.prev + 3) , pushCoords[2])
                         board.coords.insert((player.prev + 4), pushCoords[3])
                         player.prev = board.coords.index(pushCoords[0])
-                        player.next = (player.prev + 1 ) % length
+                        player.next = (player.prev + 1 ) % len(board.coords)
                         
                     else:
                         board.coords.insert((player.prev + 1), pushCoords[0])
@@ -104,18 +104,28 @@ def mqix():
                         board.coords.insert((player.prev + 4), pushCoords[3])
 
                         
-                        player.prev = board.coords.index(pushCoords[0])
-                        player.next = (player.prev + 1 ) % length
+                        player.prev = board.coords.index(pushCoords[3])
+                        player.next = (player.prev + 1) % len(board.coords)
                 else:
                     if (pushCoords[0][1] < pushCoords[3][1]):
+                        
+                        board.coords.insert((player.prev + 1), pushCoords[0])
+                        board.coords.insert((player.prev + 2), pushCoords[1])
+                        board.coords.insert((player.prev + 3) , pushCoords[2])
+                        board.coords.insert((player.prev + 4), pushCoords[3])
+
+                        
+                        player.prev = board.coords.index(pushCoords[3])
+                        player.next = (player.prev + 1) % len(board.coords)
+                        
+                    else:
                         pushCoords.reverse()
                         board.coords.insert(player.prev+1, pushCoords[0])
                         board.coords.insert((player.prev + 2), pushCoords[1])
                         board.coords.insert((player.prev + 3) , pushCoords[2])
                         board.coords.insert((player.prev + 4), pushCoords[3])
                         player.prev = board.coords.index(pushCoords[0])
-                        player.next = (player.prev + 1 ) % length
-
+                        player.next = (player.prev + 1 ) % len(board.coords)
                 
 
 
