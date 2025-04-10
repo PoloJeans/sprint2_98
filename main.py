@@ -110,7 +110,6 @@ def mqix():
             col = "blue"
             outOfBounds = True
 
-
         #Display Masks
         screen.blit(pChar_maskimg, pos)
         tempBoard.fill(col)
@@ -142,19 +141,29 @@ def mqix():
         board.draw(screen)
         player.draw(screen)
         qix.draw(screen)
+        qix.qix_movement(board_mask)
         sparc.draw(screen)
+        
+        #Qix Mask
+        newQix = pygame.image.load("red-circle1.png").convert_alpha()
+        qix_mask = pygame.mask.from_surface(newQix)
+        qix_image = qix_mask.to_surface()
+        screen.blit(qix_image, (qix.x-20,qix.y-20))
+        
 
         length = len(board.coords)
         keys = pygame.key.get_pressed()
         length = len(board.coords)
         
         # Collision checker
-        if player.collision(sparc, qix):
+  #      if player.collision(sparc, qix):
 
 
         #Trigger for push
         
 
+        print("Prev: ",board.coords[player.prev][0],",", board.coords[player.prev][1])
+        print("Next: ", board.coords[player.next][0],",", board.coords[player.next][1])
         
         if push == False:
           
