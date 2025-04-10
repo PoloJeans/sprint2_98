@@ -14,9 +14,11 @@ screen = pygame.display.set_mode((1280, 720))
 board = Board([(100, screen.get_height() - 100),(150, screen.get_height() - 100), (150, screen.get_height() - 300), (300, screen.get_height() - 300), (300, screen.get_height() - 100), (screen.get_width() - 100, screen.get_height() - 100),(screen.get_width() - 100, 100),(100, 100)], screen)
 player = Player(110, screen.get_height() - 100, 0, 1)
 
+
 def placecholderentityfunction():
     board.draw(screen)
     player.draw(screen)
+    sparc.draw(screen)
     # handles player, qix, and sparc movement on the board, probably branches into collision checking 
     # and incursion
 
@@ -28,6 +30,7 @@ def mqix():
     push = False
     next = 1
     prev = 0
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -36,6 +39,7 @@ def mqix():
 
         board.draw(screen)
         player.draw(screen)
+        length = len(board.coords)
         keys = pygame.key.get_pressed()
         length = len(board.coords)
         
@@ -45,9 +49,13 @@ def mqix():
             push = True
         
         if not push:
-            player.edgeMove(board, keys)
+          player.edgeMove(board, keys)
 
-                
+        else:
+            sparc.draw(screen)
+            
+             
+
         
         #entity management function
         
