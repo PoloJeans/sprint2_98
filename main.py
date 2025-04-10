@@ -64,21 +64,48 @@ def mqix():
                         player.y -= 10
                         prev = (prev - 1) % length
                         next = (next - 1) % length
+                    elif board.coords[next][0] > player.getPos()[0]:
+                         if keys[pygame.K_d]:
+                              player.x += 10
+                    elif board.coords[next][0] < player.getPos()[0]:
+                        if keys[pygame.K_a]:
+                            player.x -= 10
+                              
                 elif board.coords[(prev - 1) % length][1] > board.coords[prev][1]:
                     if keys[pygame.K_s]:
                             player.y += 10
                             prev = (prev - 1) % length
                             next = (next - 1) % length
+                    elif board.coords[next][0] > player.getPos()[0]:
+                         if keys[pygame.K_d]:
+                              player.x += 10
+                    elif board.coords[next][0] < player.getPos()[0]:
+                        if keys[pygame.K_a]:
+                            player.x -= 10
+
                 elif board.coords[(prev - 1) % length][0] < board.coords[prev][0]:
                     if keys[pygame.K_a]:
                             player.x -= 10
                             prev = (prev - 1) % length
                             next = (next - 1) % length
+                    elif board.coords[next][1] > player.getPos()[1]:
+                         if keys[pygame.K_s]:
+                              player.y += 10
+                    elif board.coords[next][1] < player.getPos()[1]:
+                        if keys[pygame.K_w]:
+                            player.y -= 10
+
                 elif board.coords[(prev - 1) % length][0] > board.coords[prev][0]:
                     if keys[pygame.K_d]:
                             player.x += 10
                             prev = (prev - 1) % length
                             next = (next - 1) % length
+                    elif board.coords[next][1] > player.getPos()[1]:
+                         if keys[pygame.K_s]:
+                              player.y += 10
+                    elif board.coords[next][1] < player.getPos()[1]:
+                        if keys[pygame.K_w]:
+                            player.y -= 10
 
             elif player.getPos() == board.coords[next]:
                 #FINISH THIS PART
@@ -88,21 +115,48 @@ def mqix():
                         player.y -= 10
                         prev = (prev + 1) % length
                         next = (next + 1) % length
+                    elif board.coords[prev][0] > player.getPos()[0]:
+                         if keys[pygame.K_d]:
+                              player.x += 10
+                    elif board.coords[prev][0] < player.getPos()[0]:
+                        if keys[pygame.K_a]:
+                            player.x -= 10
+
                 elif board.coords[(next +1) % length][1] > board.coords[next][1]:
                     if keys[pygame.K_s]:
                             player.y += 10
                             prev = (prev + 1) % length
                             next = (next + 1) % length
+                    elif board.coords[prev][0] > player.getPos()[0]:
+                         if keys[pygame.K_d]:
+                              player.x += 10
+                    elif board.coords[prev][0] < player.getPos()[0]:
+                        if keys[pygame.K_a]:
+                            player.x -= 10
+                    
                 elif board.coords[(next +1) % length][0] < board.coords[next][0]:
                     if keys[pygame.K_a]:
                             player.x -= 10
                             prev = (prev + 1) % length
                             next = (next + 1) % length
+                    elif board.coords[prev][1] > player.getPos()[1]:
+                         if keys[pygame.K_s]:
+                              player.y += 10
+                    elif board.coords[prev][1] < player.getPos()[1]:
+                        if keys[pygame.K_w]:
+                            player.y -= 10
+
                 elif board.coords[(next +1) % length][0] > board.coords[next][0]:
                     if keys[pygame.K_d]:
                             player.x += 10
                             prev = (prev + 1) % length
                             next = (next + 1) % length
+                    elif board.coords[prev][1] > player.getPos()[1]:
+                         if keys[pygame.K_s]:
+                              player.y += 10
+                    elif board.coords[prev][1] < player.getPos()[1]:
+                        if keys[pygame.K_w]:
+                            player.y -= 10
 
 
             elif board.coords[prev][0] == board.coords[next][0] and ((player.y > board.coords[prev][1] and player.y < board.coords[next][1]) or (player.y < board.coords[prev][1] and player.y > board.coords[next][1])):
