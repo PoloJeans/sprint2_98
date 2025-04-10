@@ -94,8 +94,10 @@ def mqix():
                 print("prev:" + str(player.prev) + ", " + str(board.coords[player.prev][0]) + ", " + str(board.coords[player.prev][1]))
                 print("next:" + str(player.next) + ", " + str(board.coords[player.next][0]) + ", " + str(board.coords[player.next][1]))
                 print("Player Pos: " + str(player.getPos()[0]) + ", " + str(player.getPos()[1]))
+        # pygame.draw.circle(screen, "pink", (screen.get_width() / 2, screen.get_height() - 620), 20)
         screen.fill("black")
 
+        # screen.blit(hBar.draw(), (10, 10))
         screen.blit(pygame.transform.scale_by(hBar.draw(), 2), (10, 10))
         screen.blit(pygame.transform.scale_by(cBar.draw(), 2), (screen.get_width() - 142, 10))
 
@@ -115,10 +117,6 @@ def mqix():
         screen.blit(pChar_maskimg, pos)
         tempBoard.fill(col)
         screen.blit(tempBoard, (100,100))
-
-
-        screen.blit(pygame.transform.scale_by(hBar.draw(), 2), (10, 10))
-        screen.blit(pygame.transform.scale_by(cBar.draw(), 2), (screen.get_width() - 142, 10))
 
         #Check mask overlap
         pos = player.getPos()
@@ -150,6 +148,15 @@ def mqix():
         
         # Collision checker
         if player.collision(sparc, qix):
+            hBar.decHealth()
+            if hBar.getHealth() == 0:
+                # trigger game over
+                pass
+            player.setPos(100, (screen.get_height() - 100))
+            player.setPrevNext(0, 1)
+            qix.setPos(screen.get_width() / 2, screen.get_height() / 2)
+            sparc.setPos(screen.get_width() / 2, screen.get_height() - 620)
+
 
 
         #Trigger for push

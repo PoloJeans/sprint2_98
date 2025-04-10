@@ -21,6 +21,7 @@ class CaptureBar():
         self.captured = 0
 
     def draw(self):
+        self.captureBar.fill("black")
         if self.captured == 0:
             self.captureBar.blit(self.empty, (0, 0))
         elif self.captured <= 25:

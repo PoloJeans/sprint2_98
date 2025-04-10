@@ -10,7 +10,8 @@ class HealthBar():
         self.sprite3 = pygame.image.load("./status/assets/heart3.png")
     
     def decHealth(self):
-        self.health -= self.health
+        if self.health >= 1:
+            self.health -= 1
 
     def getHealth(self):
         return self.health
@@ -19,7 +20,10 @@ class HealthBar():
         self.health = 3
     
     def draw(self):
-        if self.health == 1:
+        self.healthBar.fill("black")
+        if self.health == 0:
+            pass
+        elif self.health == 1:
             self.healthBar.blit(self.sprite1, (0,0))
         elif self.health == 2:
             self.healthBar.blit(self.sprite2, (0,0))

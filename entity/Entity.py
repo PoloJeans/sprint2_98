@@ -34,6 +34,5 @@ class Entity():
     #     pass
 
     def reset(self):
-        self.health = 50
         self.x
         self.y

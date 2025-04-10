@@ -7,3 +7,4 @@ class Qix(Entity):
 
     def draw(self, screen):
         pygame.draw.circle(screen, "red", (self.x, self.y), 20)
+
