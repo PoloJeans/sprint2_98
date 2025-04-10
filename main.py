@@ -7,11 +7,13 @@ from entity.Board import *
 from entity.Qix import *
 from entity.Sparc import *
 
+from status.HealthBar import *
+from status.CaptureBar import *
 
 import pygame.image
 
 
-screen = pygame.display.set_mode((640, 720), pygame.SHOWN | pygame.RESIZABLE)
+screen = pygame.display.set_mode((1280, 720), pygame.SHOWN | pygame.RESIZABLE)
 
 #Initialise the board using a list of tuple coordinates (x,y)
 board = Board([(100, screen.get_height() - 100),
@@ -22,7 +24,8 @@ board = Board([(100, screen.get_height() - 100),
             (screen.get_width() - 100, screen.get_height() - 100),
             (screen.get_width() - 100, 100), (100, 100)], screen)
 player = Player(100, (screen.get_height() - 100), 0, 1)
-
+hBar = HealthBar()
+cBar = CaptureBar()
 
 def placecholderentityfunction():
     board.draw(screen)
@@ -88,6 +91,9 @@ def mqix():
                 print("next:" + str(player.next) + ", " + str(board.coords[player.next][0]) + ", " + str(board.coords[player.next][1]))
                 print("Player Pos: " + str(player.getPos()[0]) + ", " + str(player.getPos()[1]))
         screen.fill("black")
+
+        screen.blit(pygame.transform.scale_by(hBar.draw(), 2), (10, 10))
+        screen.blit(pygame.transform.scale_by(cBar.draw(), 2), (screen.get_width() - 142, 10))
 
         #Check mask overlap
         pos = player.getPos()
