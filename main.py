@@ -1,10 +1,11 @@
 # Example file showing a basic pygame "game loop"
 import pygame
 
+from entity.Entity import *
 from entity.Player import *
-from entity.board import *
-from entity.qix import *
-from entity.sparc import *
+from entity.Board import *
+from entity.Qix import *
+from entity.Sparc import *
 
 import pygame.image
 

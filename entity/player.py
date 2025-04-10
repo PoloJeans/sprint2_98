@@ -1,35 +1,12 @@
 import pygame
+from entity.Entity import Entity
 
-class Player():
+class Player(Entity):
     def __init__(self, x, y, prev, next):
-        self.health = 50
-        self.x = x
-        self.y = y
-        self.prev = prev
-        self.next = next
+        super().__init__(x, y, prev, next)
         
-        
-
-    def setHealth(self, health):
-        self.health = health
-
-    def getHealth(self):
-        return self.health
-    
-    def getPos(self):
-        return (self.x, self.y)
-
     def draw(self, screen):
         pygame.draw.circle(screen, "red", (self.x, self.y), 20)
-
-    def move(self, board):
-        pass
-
-    def reset(self):
-        self.health = 50
-        self.x
-        self.y
-
     """
     Base edge movement implementation
     3----------2
