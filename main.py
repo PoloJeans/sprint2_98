@@ -58,6 +58,7 @@ def mqix():
     tempBoard = pygame.Surface((1084,524))
     tempBoard.fill("blue")
     board_mask = pygame.mask.from_surface(tempBoard)
+    
 
     #Check mask overlap
     pos = player.getPos()
@@ -116,7 +117,7 @@ def mqix():
 
         #Display Masks
         screen.blit(pChar_maskimg, pos)
-        tempBoard.fill(col)
+        tempBoard.fill("blue")
         screen.blit(tempBoard, (100,100))
 
         #Check mask overlap
