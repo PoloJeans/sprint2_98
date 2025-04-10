@@ -15,7 +15,10 @@ class Player():
 
     def getHealth(self):
         return self.health
-    
+    def setPos(self, coordinate):
+        self.x = coordinate[0]
+        self.y = coordinate[1]
+
     def getPos(self):
         return (self.x, self.y)
 
@@ -62,6 +65,7 @@ class Player():
                     self.y -= 10
                     self.prev = (self.prev - 1) % length
                     self.next = (self.next - 1) % length
+                    
                 elif board.coords[self.next][0] > self.getPos()[0]:
                     if keys[pygame.K_d]:
                         self.x += 10
