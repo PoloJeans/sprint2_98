@@ -38,6 +38,34 @@ def mqix():
     
     left = False
 
+    # Player character
+    pChar = pygame.image.load("red-circle1.png").convert_alpha()
+    #pChar_rect = pChar.get_rect()
+    pChar_mask = pygame.mask.from_surface(pChar)
+    pChar_maskimg = pChar_mask.to_surface()
+
+    tempBoard = pygame.Surface((1084,524))
+    tempBoard.fill("blue")
+    board_mask = pygame.mask.from_surface(tempBoard)
+
+    #Check mask overlap
+    pos = player.getPos()
+    pos = (pos[0]-20, pos[1]-20)
+    outOfBounds = False
+    if pChar_mask.overlap(board_mask, (pos[0]-1130, pos[1]-570)):
+        outOfBounds = False
+        col = "aliceblue"
+    else: 
+        col = "blue"
+        outOfBounds = True
+
+
+    #Display Masks
+    screen.blit(pChar_maskimg, pos)
+    tempBoard.fill(col)
+    screen.blit(tempBoard, (100,100))
+
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
