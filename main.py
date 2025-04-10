@@ -12,8 +12,7 @@ import pygame.image
 screen = pygame.display.set_mode((1280, 720))
 
 #Initialise the board using a list of tuple coordinates (x,y)
-dim = [(100, screen.get_height() - 100), (150, screen.get_height() - 100), (150, screen.get_height() - 300), (300, screen.get_height() - 300), (300, screen.get_height() - 100), (screen.get_width() - 100, screen.get_height() - 100), (screen.get_width() - 100, 100), (100, 100)]
-board = Board(dim, screen)
+board = Board([(100, screen.get_height() - 100), (150, screen.get_height() - 100), (150, screen.get_height() - 300), (300, screen.get_height() - 300), (300, screen.get_height() - 100), (screen.get_width() - 100, screen.get_height() - 100), (screen.get_width() - 100, 100), (100, 100)], screen)
 player = Player(110, screen.get_height() - 100, 0, 1)
 
 
