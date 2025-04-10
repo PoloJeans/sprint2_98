@@ -20,7 +20,7 @@ class Player(Entity):
     def draw(self, screen):
         pygame.draw.circle(screen, "red", (self.x, self.y), 20)
 
-    def collision(self, sparc, qix):
+    def collision(self, sparc, qix, push):
         playerPos = self.getPos()
         sparcPos = sparc.getPos()
         qixPos = qix.getPos()
@@ -38,7 +38,7 @@ class Player(Entity):
 
         if distSparc <= 30:
             return True
-        elif distQix <= 30:
+        elif distQix <= 30 and push:
             return True
         else:
             return False

@@ -154,7 +154,7 @@ def mqix():
         length = len(board.coords)
         
         # Collision checker
-        if player.collision(sparc, qix):
+        if player.collision(sparc, qix, push) :
             hBar.decHealth()
             if hBar.getHealth() == 0:
                 # trigger game over
