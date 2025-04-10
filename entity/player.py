@@ -7,9 +7,6 @@ class Player(Entity):
         super().__init__(x, y, prev, next)
         self.health = 50
         
-    def setPrevNext(self, prev, next):
-        self.prev = prev
-        self.next = next
 
     def setHealth(self, health):
         self.health = health
@@ -39,9 +36,9 @@ class Player(Entity):
         distSparc = math.sqrt(dxSparc**2 + dySparc**2)
         distQix = math.sqrt(dxQix**2 + dyQix**2)
 
-        if distSparc <= 10:
+        if distSparc <= 30:
             return True
-        elif distQix <= 10:
+        elif distQix <= 30:
             return True
         else:
             return False

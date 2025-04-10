@@ -28,7 +28,9 @@ hBar = HealthBar()
 cBar = CaptureBar()
 player = Player(100, (screen.get_height() - 100), 0, 1)
 qix = Qix(screen.get_width() / 2, screen.get_height() / 2, 0, 1)
-sparc = Sparc(screen.get_width() / 2, screen.get_height() - 620, 0, 1)
+
+# next and prev value for sparc is currently hardcoded to the board with an incursion already present
+sparc = Sparc(screen.get_width() / 2, screen.get_height() - 620, 6, 7)
 
 
 def placecholderentityfunction():
@@ -141,12 +143,9 @@ def mqix():
         qix.draw(screen)
         qix.qix_movement(board_mask)
         sparc.draw(screen)
+        sparc.sparc_movement(board_mask)
         
-        #Qix Mask
-        newQix = pygame.image.load("red-circle1.png").convert_alpha()
-        qix_mask = pygame.mask.from_surface(newQix)
-        qix_image = qix_mask.to_surface()
-        screen.blit(qix_image, (qix.x-20,qix.y-20))
+
         
 
         length = len(board.coords)
@@ -161,6 +160,7 @@ def mqix():
                 pass
             player.setPos(100, (screen.get_height() - 100))
             player.setPrevNext(0, 1)
+            sparc.setPrevNext(6,7)
             qix.setPos(screen.get_width() / 2, screen.get_height() / 2)
             sparc.setPos(screen.get_width() / 2, screen.get_height() - 620)
 
@@ -173,7 +173,7 @@ def mqix():
         print("Next: ", board.coords[player.next][0],",", board.coords[player.next][1])
         
         if push == False:
-          
+          sparc.edgeMove(board)
           player.edgeMove(board, keys)
           if keys[pygame.K_SPACE]:
             first = player.getPos()

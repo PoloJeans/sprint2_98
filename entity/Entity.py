@@ -8,6 +8,10 @@ class Entity():
         self.prev = prev
         self.next = next
 
+    def setPrevNext(self, prev, next):
+        self.prev = prev
+        self.next = next
+
     def setHealth(self, health):
         self.health = health
 
