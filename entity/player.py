@@ -1,4 +1,5 @@
 import pygame
+import math
 from entity.Entity import Entity
 
 class Player(Entity):
@@ -6,7 +7,9 @@ class Player(Entity):
         super().__init__(x, y, prev, next)
         self.health = 50
         
-        
+    def setPrevNext(self, prev, next):
+        self.prev = prev
+        self.next = next
 
     def setHealth(self, health):
         self.health = health
@@ -20,10 +23,28 @@ class Player(Entity):
     def draw(self, screen):
         pygame.draw.circle(screen, "red", (self.x, self.y), 20)
 
-    def collision(sparc, qix):
-        playerPos = super().getPos()
+    def collision(self, sparc, qix):
+        playerPos = self.getPos()
         sparcPos = sparc.getPos()
         qixPos = qix.getPos()
+
+        # Delta from player to sparc
+        dxSparc = abs(playerPos[0] - sparcPos[0])
+        dySparc = abs(playerPos[1] - sparcPos[1])
+
+        # Delta from player to qix
+        dxQix = abs(playerPos[0] - qixPos[0])
+        dyQix = abs(playerPos[1] - qixPos[1])
+
+        distSparc = math.sqrt(dxSparc**2 + dySparc**2)
+        distQix = math.sqrt(dxQix**2 + dyQix**2)
+
+        if distSparc <= 10:
+            return True
+        elif distQix <= 10:
+            return True
+        else:
+            return False
 
         # Check if x is within 10 pixels of each enemey
 
