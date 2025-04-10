@@ -56,6 +56,7 @@ def mqix():
     tempBoard = pygame.Surface((1084,524))
     tempBoard.fill("blue")
     board_mask = pygame.mask.from_surface(tempBoard)
+    
 
     #Check mask overlap
     pos = player.getPos()
@@ -112,7 +113,7 @@ def mqix():
 
         #Display Masks
         screen.blit(pChar_maskimg, pos)
-        tempBoard.fill(col)
+        tempBoard.fill("blue")
         screen.blit(tempBoard, (100,100))
 
 
@@ -144,11 +145,6 @@ def mqix():
         qix.qix_movement(board_mask)
         sparc.draw(screen)
         
-        #Qix Mask
-        newQix = pygame.image.load("red-circle1.png").convert_alpha()
-        qix_mask = pygame.mask.from_surface(newQix)
-        qix_image = qix_mask.to_surface()
-        screen.blit(qix_image, (qix.x-20,qix.y-20))
         
 
         length = len(board.coords)
