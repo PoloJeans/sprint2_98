@@ -64,12 +64,19 @@ def mqix():
           
           player.edgeMove(board, keys)
           if keys[pygame.K_SPACE]:
-            first = player.getPos()
+            pushCoords = []
+            pushCoords.append(player.getPos())
+            
             push = True
             left = False
 
         else:
             pos = player.getPos()
+            current  = pushCoords.copy()
+            current.append(pos)
+            
+            pygame.draw.lines(screen, "green", False, current, 2)
+            
             if board.coords[player.prev][0] == player.getPos()[0] == board.coords[player.next][0] and left:
                 push = False 
                 left = False
@@ -78,18 +85,22 @@ def mqix():
                 left = False
             elif keys[pygame.K_w]:
                 if boardMask.get_at((pos[0], pos[1] - 10 )) == 1:
+                    pushCoords.append(player.getPos())
                     player.y -= 10
                     left = True
             elif keys[pygame.K_s]:
                 if boardMask.get_at((pos[0], pos[1] + 10 )) == 1:
+                    pushCoords.append(player.getPos())
                     player.y += 10
                     left = True
             elif keys[pygame.K_a]:
                 if boardMask.get_at((pos[0] -10 , pos[1])) == 1:
+                    pushCoords.append(player.getPos())
                     player.x -= 10
                     left = True
             elif keys[pygame.K_d]:
                 if boardMask.get_at((pos[0] + 10 , pos[1])) == 1:
+                    pushCoords.append(player.getPos())
                     player.x += 10
                     left = True
             
