@@ -48,7 +48,6 @@ class Sparc(Entity):
         pos = self.getPos()
         
         #Logic for player reaching corner in the clockwise direction
-        print(self.prev)
         if self.getPos() == board.coords[self.prev]:
             #If prev-1 point is above the prev point, allow upwards movement, or allow movement to previous edge            
             if board.coords[(self.prev - 1) % length][1] < board.coords[self.prev][1]:
