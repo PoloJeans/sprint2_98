@@ -80,7 +80,7 @@ def main_menu():
                     mqix()
                 if quitButton.checkInput(mousePos):
                     pygame.quit()
-                    sys.exit
+                    break
 
         pygame.display.update()
 
