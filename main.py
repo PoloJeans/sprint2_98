@@ -3,10 +3,10 @@ import pygame
 import copy
 
 from entity.Entity import *
-from entity.player import *
+from entity.Player import *
 from entity.Board import *
-from entity.qix import *
-from entity.sparc import *
+from entity.Qix import *
+from entity.Sparc import *
 
 from status.HealthBar import *
 from status.CaptureBar import *
@@ -67,33 +67,16 @@ def mqix():
     #Check mask overlap
     pos = player.getPos()
     pos = (pos[0]-20, pos[1]-20)
-    #outOfBounds = False
-    #if pChar_mask.overlap(boardMask, (pos[0]-1130, pos[1]-570)):
-    #    outOfBounds = False
-    #    col = "aliceblue"
-    #else: 
-    #    col = "blue"
-    #    outOfBounds = True
 
 
     #Display Masks
     screen.blit(pChar_maskimg, pos)
-    board_surface = boardMask.to_surface(
-        setcolor=(255, 255, 255),  # White for visible mask areas
-        unsetcolor=(0, 0, 0, 0)    # Transparent for mask=0 areas
-    )
-    screen.blit(board_surface, (100,100))
 
 
     # Player character
     pChar = pygame.image.load("red-circle1.png").convert_alpha()
-    #pChar_rect = pChar.get_rect()
     pChar_mask = pygame.mask.from_surface(pChar)
     pChar_maskimg = pChar_mask.to_surface()
-
-    #tempBoard = pygame.Surface((1084,524))
-    #tempBoard.fill("blue")
-    #boardMask_surface = pygame.mask.from_surface(tempBoard)
 
 
     #Run game
@@ -115,19 +98,9 @@ def mqix():
         #Check mask overlap
         pos = player.getPos()
         pos = (pos[0]-20, pos[1]-20)
-        outOfBounds = False
-        if pChar_mask.overlap(boardMask, (pos[0]-600, pos[1]-680)):
-            print("In")
-            outOfBounds = False
-            col = "aliceblue"
-        else: 
-            col = "blue"
-            outOfBounds = True
 
         #Display Masks
         screen.blit(pChar_maskimg, pos)
-        #tempBoard.fill("blue")
-        #screen.blit(tempBoard, (100,100))
 
         #Check mask overlap
         pos = player.getPos()
@@ -148,7 +121,6 @@ def mqix():
 
 
         # Draw out all entities
-        #boardMask.to_surface(screen, setcolor=(0, 255, 0, 255)) 
         board.draw(screen)
         player.draw(screen)
         qix.draw(screen)
@@ -156,13 +128,7 @@ def mqix():
         sparc.draw(screen)
         sparc.sparc_movement(boardMask)
         
-        
-
-        
-
-        length = len(board.coords)
         keys = pygame.key.get_pressed()
-        length = len(board.coords)
         
         # Collision checker
         if player.collision(sparc, qix, push) :
@@ -179,17 +145,11 @@ def mqix():
 
 
         #Trigger for push
-        
-
-        print("Prev: ",board.coords[player.prev][0],",", board.coords[player.prev][1])
-        print("Next: ", board.coords[player.next][0],",", board.coords[player.next][1])
-        
         if push == False:
           sparc.edgeMove(board)
           player.edgeMove(board, keys)
           if keys[pygame.K_SPACE]:
             pushCoords = []
-            #pushCoords.append(player.getPos())
             lastkey = -1
             push = True
             left = False
@@ -351,8 +311,6 @@ def mqix():
 
         
         #entity management function
-        
-
         # flip() the display to put your work on screen
         pygame.display.flip()
         clock.tick(120) # limits FPS to 120
