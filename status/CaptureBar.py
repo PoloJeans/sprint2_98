@@ -11,7 +11,8 @@ class CaptureBar():
         self.full = pygame.image.load("./status/assets/captureBarFull.png")
 
     def setCaptured(self, value):
-        self.captured == value * 100
+        self.captured = int(value)
+        print(self.captured)
     
     def getCaptured(self):
         return self.captured

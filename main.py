@@ -156,7 +156,7 @@ def mqix():
                 running = False
 
         screen.fill("black")
-        
+
         #Check for Lose Condition
         if (hBar.getHealth() <= 0):
             #Reset Game Variables
@@ -202,6 +202,8 @@ def mqix():
             #sparc.setPos(screen.get_width() - 100, screen.get_height() - 620)
 
         #getUpdatedArea(boardMask, boardMaskArea)
+        print(getCapturedArea(boardMask, boardMaskArea))
+        cBar.setCaptured(getCapturedArea(boardMask, boardMaskArea)*100)
 
         sparc.edgeMove(board)
         #Trigger for push
@@ -219,7 +221,7 @@ def mqix():
             current  = copy.deepcopy(pushCoords)
             current.append(pos)
             current.append(pos)
-            pygame.draw.lines(screen, "green", False, current, 2)
+            pygame.draw.lines(screen, "blue", False, current, 2)
             
             if board.coords[player.prev][0] == player.getPos()[0] == board.coords[player.next][0] and left:
                 push = False 
