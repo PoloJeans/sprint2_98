@@ -10,11 +10,11 @@ from entity.sparc import *
 
 from status.HealthBar import *
 from status.CaptureBar import *
-
+from menu.Button import *
 import pygame.image
 
 
-screen = pygame.display.set_mode((640, 720), pygame.SHOWN | pygame.RESIZABLE)
+screen = pygame.display.set_mode((1280, 720), pygame.SHOWN | pygame.RESIZABLE)
 botleft = (100, screen.get_height() - 100)
 botright = (screen.get_width() - 100, screen.get_height() - 100)
 topright = (screen.get_width() - 100, 100)
@@ -44,6 +44,46 @@ def updateBoundary(coords, mask):
         for j in range(coords[0][1]+1, coords[1][1]):
             mask.set_at((i,j), 0)
 
+def getFont(size):
+    return pygame.font.Font("./menu/assets/font.ttf", size)
+
+def main_menu():
+    pygame.init()
+    pygame.font.init()
+    pygame.display.set_caption("Menu")
+    pygame.mixer.music.load("toby fox - UNDERTALE Soundtrack - 01 Once Upon a Time.mp3")
+    pygame.mixer.music.play(100,0,0)
+
+    bg = pygame.image.load("./menu/assets/menubg.png")
+    while True:
+        screen.blit(bg, (0,0))
+        mousePos = pygame.mouse.get_pos()
+
+        menuText = getFont(70).render("mQix", True, "white")
+        menuRect = menuText.get_rect(center=(screen.get_width()/2, 150))
+
+        playButton = Button(pygame.image.load("./menu/assets/button.png").convert_alpha(), (1000,400), "PLAY", getFont(45))
+        quitButton = Button(pygame.image.load("./menu/assets/button.png").convert_alpha(), (1000,550), "QUIT", getFont(45))
+
+        screen.blit(menuText, menuRect)
+
+        for button in [playButton,quitButton]:
+            button.changeColour(mousePos)
+            button.update(screen)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if playButton.checkInput(mousePos):
+                    mqix()
+                if quitButton.checkInput(mousePos):
+                    pygame.quit()
+                    sys.exit
+
+        pygame.display.update()
+
 def mqix():
     # pygame setup
     pygame.init()
@@ -51,6 +91,8 @@ def mqix():
     clock = pygame.time.Clock()
     push = False
     left = False
+    pygame.mixer.music.load("246940-9197049f-e352-4a71-bdea-9303e664c54d.mp3")
+    pygame.mixer.music.play(100,0,0)
     
     boardMask = pygame.mask.Mask((screen.get_width(), screen.get_height()))
     for i in range (topleft[0], topright[0] + 1):
@@ -359,4 +401,4 @@ def mqix():
 
     pygame.quit()
 
-mqix()
+main_menu()
