@@ -31,10 +31,7 @@ class Sparc(Entity):
         sparc_mask = pygame.mask.from_surface(newSparc)
         sparc_image = sparc_mask.to_surface()
 
-
-    #This abomination works and is bulletproof when it does
-    #Add your points to the board.coords in the correct order 
-    #and it'll handle edge movement automagically
+    #Handles board edge movement - modified from Player class
     def edgeMove(self, board):
         length = len(board.coords)
         

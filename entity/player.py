@@ -8,19 +8,10 @@ class Player(Entity):
         self.sprite = pygame.image.load("./entity/assets/player.png")
         self.playerSurface = pygame.Surface((32, 32))
 
-        self.health = 50
-        
-
     def setPrevNext(self, prev, next):
         #This is mainly used to reset prev,next for sparc when game ends to avoid out-of-bounds error
         self.prev = prev
         self.next = next
-
-    def setHealth(self, health):
-        self.health = health
-
-    def getHealth(self):
-        return self.health
     
     def getPos(self):
         return (self.x, self.y)
@@ -52,11 +43,6 @@ class Player(Entity):
         else:
             return False
 
-        # Check if x is within 10 pixels of each enemey
-
-        # Check if y is within 10 pixels of each enemey
-        
-    
     """
     Base edge movement implementation
     3----------2

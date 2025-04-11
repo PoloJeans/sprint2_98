@@ -7,17 +7,7 @@ class Board():
         self.next = 1
         self.prev = 0
         self.coords = coords
-    
-    #def setDim(self, width, height, screen):
-    #    self.rect.update(0, 0, width, height)
-    #    self.rect.center = screen.get_rect().center
         
-    #def getWidth(self):
-    #    return self.rect.width
-
-    #def getHeight(self):
-    #    return self.rect.height
-    
     def reset(self, screen):
         self.coords = [(100, screen.get_height() - 100), (screen.get_width() - 100, screen.get_height() - 100), (screen.get_width() - 100, 100), (100, 100)]
     

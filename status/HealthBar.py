@@ -1,5 +1,4 @@
 import pygame
-import pygame.image
 
 class HealthBar():
     def __init__(self):

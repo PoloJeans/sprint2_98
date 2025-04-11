@@ -39,12 +39,6 @@ def updateBoundary(coords, mask):
 def getFont(size):
     return pygame.font.Font("./menu/assets/font.ttf", size)
 
-def getCapturedArea(boardMask, area):
-    #Given a board mask & its area, 
-    #return the % of captured bits as a float from 0-1
-    capturedArea = area - boardMask.count()
-    return round((capturedArea/area),2)
-
 def updateCoords(pushCoords, dir):
     board.coords.insert((player.prev + 1), pushCoords[0])
     board.coords.insert((player.prev + 2), pushCoords[1])
@@ -160,11 +154,7 @@ def mqix():
         for event in pygame.event.get():    
             if event.type == pygame.QUIT:
                 running = False
-                print("prev:" + str(player.prev) + ", " + str(board.coords[player.prev][0]) + ", " + str(board.coords[player.prev][1]))
-                print("next:" + str(player.next) + ", " + str(board.coords[player.next][0]) + ", " + str(board.coords[player.next][1]))
-                print("Player Pos: " + str(player.getPos()[0]) + ", " + str(player.getPos()[1]))
-                print(board.coords)
-                print(pushCoords)
+
         screen.fill("black")
         
         #Check for Lose Condition
@@ -211,7 +201,6 @@ def mqix():
             qix.setPos(screen.get_width() / 2, screen.get_height() / 2)
             #sparc.setPos(screen.get_width() - 100, screen.get_height() - 620)
 
-
         #getUpdatedArea(boardMask, boardMaskArea)
 
         sparc.edgeMove(board)
@@ -226,13 +215,10 @@ def mqix():
             left = False
 
         else:
-            
             pos = player.getPos()
             current  = copy.deepcopy(pushCoords)
             current.append(pos)
             current.append(pos)
-
-            
             pygame.draw.lines(screen, "green", False, current, 2)
             
             if board.coords[player.prev][0] == player.getPos()[0] == board.coords[player.next][0] and left:
@@ -243,15 +229,12 @@ def mqix():
                     player.setPos(pushCoords[0][0], pushCoords[0][1])
                     pushCoords = []
                 else:
-                
-                    
                     if boardMask.get_at((player.getPos()[0]-1, player.getPos()[1])) == 1:
                         if (pushCoords[0][1] < pushCoords[3][1]):
                             pushCoords.reverse()
                             pushCoords = updateCoords(pushCoords, 0)
                             updateBoundary(pushCoords, boardMask)
                             sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
-                            
                         else:
                             pushCoords = updateCoords(pushCoords, 3)
                             updateBoundary(pushCoords, boardMask)
@@ -262,15 +245,12 @@ def mqix():
                             pushCoords = updateCoords(pushCoords, 3)
                             updateBoundary(pushCoords, boardMask)
                             sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
-                            
                         else:
                             pushCoords.reverse()
                             pushCoords = updateCoords(pushCoords, 0)
                             updateBoundary(pushCoords, boardMask)
                             sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                 
-
-
             elif board.coords[player.prev][1] == player.getPos()[1] == board.coords[player.next][1] and left:
                 push = False
                 left = False
@@ -279,13 +259,11 @@ def mqix():
                     player.setPos(pushCoords[0][0], pushCoords[0][1])
                     pushCoords = []
                 else:
-                    
                     if boardMask.get_at((player.getPos()[0], player.getPos()[1]-1)) == 1:
                         if (pushCoords[0][0] > pushCoords[3][0]):
                             pushCoords.reverse()
                             pushCoords = updateCoords(pushCoords, 0)
                             sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
-                            
                         else:
                             pushCoords = updateCoords(pushCoords, 3)
                             updateBoundary(pushCoords, boardMask)
