@@ -160,8 +160,6 @@ def mqix():
                         board.coords.insert((player.prev + 2), pushCoords[1])
                         board.coords.insert((player.prev + 3) , pushCoords[2])
                         board.coords.insert((player.prev + 4), pushCoords[3])
-
-                        
                         player.prev = board.coords.index(pushCoords[3])
                         player.next = (player.prev + 1) % len(board.coords)
                         pushCoords.sort()
