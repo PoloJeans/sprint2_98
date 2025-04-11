@@ -1,6 +1,5 @@
 # Example file showing a basic pygame "game loop"
-import pygame
-
+import pygame, sys
 
 from entity.Player import *
 from entity.Board import *
@@ -10,10 +9,51 @@ from entity.Sparc import *
 from status.HealthBar import *
 from status.CaptureBar import *
 
+from menu.Button import *
+
 import pygame.image
 
-
 screen = pygame.display.set_mode((1280, 720), pygame.SHOWN | pygame.RESIZABLE)
+
+def getFont(size):
+    return pygame.font.Font("./menu/assets/font.ttf", size)
+
+def main_menu():
+    pygame.init()
+    pygame.font.init()
+    pygame.display.set_caption("Menu")
+
+    bg = pygame.image.load("./menu/assets/menubg.png")
+    while True:
+        screen.blit(bg, (0,0))
+        mousePos = pygame.mouse.get_pos()
+
+        menuText = getFont(70).render("mQix", True, "white")
+        menuRect = menuText.get_rect(center=(screen.get_width()/2, 150))
+
+        playButton = Button(pygame.image.load("./menu/assets/button.png").convert_alpha(), (1000,400), "PLAY", getFont(45))
+        quitButton = Button(pygame.image.load("./menu/assets/button.png").convert_alpha(), (1000,550), "QUIT", getFont(45))
+
+        screen.blit(menuText, menuRect)
+
+        for button in [playButton,quitButton]:
+            button.changeColour(mousePos)
+            button.update(screen)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if playButton.checkInput(mousePos):
+                    mqix()
+                if quitButton.checkInput(mousePos):
+                    pygame.quit()
+                    sys.exit
+
+        pygame.display.update()
+
+
 
 #Initialise the board using a list of tuple coordinates (x,y)
 board = Board([(100, screen.get_height() - 100),
@@ -43,36 +83,9 @@ def mqix():
     
     left = False
 
-    # Player character
-    pChar = pygame.image.load("red-circle1.png").convert_alpha()
-    #pChar_rect = pChar.get_rect()
-    pChar_mask = pygame.mask.from_surface(pChar)
-    pChar_maskimg = pChar_mask.to_surface()
-
-    tempBoard = pygame.Surface((1084,524))
-    tempBoard.fill("blue")
-    board_mask = pygame.mask.from_surface(tempBoard)
-
-    #Check mask overlap
-    pos = player.getPos()
-    pos = (pos[0]-20, pos[1]-20)
-    outOfBounds = False
-    if pChar_mask.overlap(board_mask, (pos[0]-1130, pos[1]-570)):
-        outOfBounds = False
-        col = "aliceblue"
-    else: 
-        col = "blue"
-        outOfBounds = True
-
-
-    #Display Masks
-    screen.blit(pChar_maskimg, pos)
-    tempBoard.fill(col)
-    screen.blit(tempBoard, (100,100))
-
 
     # Player character
-    pChar = pygame.image.load("red-circle1.png").convert_alpha()
+    pChar = pygame.image.load("red-circle.png").convert_alpha()
     #pChar_rect = pChar.get_rect()
     pChar_mask = pygame.mask.from_surface(pChar)
     pChar_maskimg = pChar_mask.to_surface()
@@ -167,4 +180,4 @@ def mqix():
 
     pygame.quit()
 
-mqix()
+main_menu()

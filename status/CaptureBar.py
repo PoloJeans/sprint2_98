@@ -32,7 +32,7 @@ class CaptureBar():
         else:
             self.captureBar.blit(self.full, (0, 0))
         return self.captureBar
-
-
+    
+    
 
 
