@@ -181,10 +181,10 @@ def mqix():
                 # trigger game over
                 pass
             player.setPos(100, (screen.get_height() - 100)) #Bottom left corner
-            player.setPrevNext(0, 1)
-            sparc.setPrevNext(2,3)
+            #player.setPrevNext(0, 1)
+            #sparc.setPrevNext(2,3)
             qix.setPos(screen.get_width() / 2, screen.get_height() / 2)
-            sparc.setPos(screen.get_width() - 100, screen.get_height() - 620)
+            #sparc.setPos(screen.get_width() - 100, screen.get_height() - 620)
 
 
         sparc.edgeMove(board)
@@ -229,7 +229,7 @@ def mqix():
                             player.next = (player.prev + 1 ) % len(board.coords)
                             pushCoords.sort()
                             updateBoundary(pushCoords, boardMask)
-
+                            sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                             
                         else:
                             board.coords.insert((player.prev + 1), pushCoords[0])
@@ -242,6 +242,7 @@ def mqix():
                             player.next = (player.prev + 1) % len(board.coords)
                             pushCoords.sort()
                             updateBoundary(pushCoords, boardMask)
+                            sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                     else:
                         if (pushCoords[0][1] < pushCoords[3][1]):
                             board.coords.insert((player.prev + 1), pushCoords[0])
@@ -252,6 +253,7 @@ def mqix():
                             player.next = (player.prev + 1) % len(board.coords)
                             pushCoords.sort()
                             updateBoundary(pushCoords, boardMask)
+                            sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                             
                         else:
                             pushCoords.reverse()
@@ -263,6 +265,7 @@ def mqix():
                             player.next = (player.prev + 1 ) % len(board.coords)
                             pushCoords.sort()
                             updateBoundary(pushCoords, boardMask)
+                            sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                 
 
 
@@ -286,6 +289,7 @@ def mqix():
                             player.next = (player.prev + 1 ) % len(board.coords)
                             pushCoords.sort()
                             updateBoundary(pushCoords, boardMask)
+                            sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                             
                         else:
                             board.coords.insert((player.prev + 1), pushCoords[0])
@@ -296,6 +300,7 @@ def mqix():
                             player.next = (player.prev + 1) % len(board.coords)
                             pushCoords.sort()
                             updateBoundary(pushCoords, boardMask)
+                            sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                     else:
                         if (pushCoords[0][0] < pushCoords[3][0]):
                             pushCoords.reverse()
@@ -307,6 +312,7 @@ def mqix():
                             player.next = (player.prev + 1 ) % len(board.coords)
                             pushCoords.sort()
                             updateBoundary(pushCoords, boardMask)
+                            sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                         else:
                             board.coords.insert((player.prev + 1), pushCoords[0])
                             board.coords.insert((player.prev + 2), pushCoords[1])
@@ -316,6 +322,7 @@ def mqix():
                             player.next = (player.prev + 1) % len(board.coords)
                             pushCoords.sort()
                             updateBoundary(pushCoords, boardMask)
+                            sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                         
 
             elif keys[pygame.K_w]:
