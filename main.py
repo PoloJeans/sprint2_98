@@ -1,19 +1,16 @@
 # Example file showing a basic pygame "game loop"
 import pygame
 import copy
-import sys
 
 from entity.Entity import *
 from entity.player import *
-from entity.Board import *
+from entity.board import *
 from entity.qix import *
 from entity.sparc import *
 
 from status.HealthBar import *
 from status.CaptureBar import *
 from menu.Button import *
-import pygame.image
-
 
 screen = pygame.display.set_mode((1280, 720), pygame.SHOWN | pygame.RESIZABLE)
 botleft = (100, screen.get_height() - 100)
@@ -21,6 +18,7 @@ botright = (screen.get_width() - 100, screen.get_height() - 100)
 topright = (screen.get_width() - 100, 100)
 topleft = (100, 100)
 #Initialise the board using a list of tuple coordinates (x,y)
+title = pygame.image.load("title.png")
 board = Board([(100, screen.get_height() - 100),
             (screen.get_width() - 100, screen.get_height() - 100),
             (screen.get_width() - 100, 100), 
@@ -33,13 +31,6 @@ qix = Qix(screen.get_width() / 2, screen.get_height() / 2, 0, 1)
 # next and prev value for sparc is currently hardcoded to the board with an incursion already present
 sparc = Sparc(screen.get_width() / 2, screen.get_height() - 620, 2, 3)
 
-
-def placecholderentityfunction():
-    board.draw(screen)
-    player.draw(screen)
-    sparc.draw(screen)
-    # handles player, qix, and sparc movement on the board, probably branches into collision checking 
-    # and incursion
 def updateBoundary(coords, mask):
     for i in range(coords[0][0] + 1, coords[3][0]):
         for j in range(coords[0][1]+1, coords[1][1]):
@@ -53,7 +44,22 @@ def getCapturedArea(boardMask, area):
     #return the % of captured bits as a float from 0-1
     capturedArea = area - boardMask.count()
     return round((capturedArea/area),2)
-    
+
+def updateCoords(pushCoords, dir):
+    board.coords.insert((player.prev + 1), pushCoords[0])
+    board.coords.insert((player.prev + 2), pushCoords[1])
+    board.coords.insert((player.prev + 3), pushCoords[2])
+    board.coords.insert((player.prev + 4), pushCoords[3])
+    player.prev = board.coords.index(pushCoords[dir])
+    player.next = (player.prev + 1) % len(board.coords)
+    pushCoords.sort()
+    return pushCoords
+
+def getCapturedArea(boardMask, area):
+    #Given a board mask & its area, 
+    #return the % of captured bits as a float from 0-1
+    capturedArea = area - boardMask.count()
+    return round((capturedArea/area),2)
 
 def main_menu():
     pygame.init()
@@ -126,7 +132,7 @@ def game_over_screen():
                     break
                 
         pygame.display.update()
-                
+        
 def mqix():
     # pygame setup
     pygame.init()
@@ -145,26 +151,9 @@ def mqix():
     boardMaskArea = boardMask.count() # Number of 1 bits in mask (USE FOR getCapturedArea() )
 
     # Player character
-    pChar = pygame.image.load("red-circle1.png").convert_alpha()
+    pChar = pygame.image.load("./entity/assets/player.png").convert_alpha()
     #pChar_rect = pChar.get_rect()
     pChar_mask = pygame.mask.from_surface(pChar)
-    pChar_maskimg = pChar_mask.to_surface()
-    
-
-    #Check mask overlap
-    pos = player.getPos()
-    pos = (pos[0]-20, pos[1]-20)
-
-
-    #Display Masks
-    screen.blit(pChar_maskimg, pos)
-
-
-    # Player character
-    pChar = pygame.image.load("red-circle1.png").convert_alpha()
-    pChar_mask = pygame.mask.from_surface(pChar)
-    pChar_maskimg = pChar_mask.to_surface()
-
 
     #Run game
     while running:
@@ -178,6 +167,7 @@ def mqix():
                 print(pushCoords)
         screen.fill("black")
         
+        #Check for Lose Condition
         if (hBar.getHealth() <= 0):
             #Reset Game Variables
             running = False
@@ -191,39 +181,15 @@ def mqix():
             
             pygame.mixer.music.stop()
             game_over_screen()
-        
-            
 
         # screen.blit(hBar.draw(), (10, 10))
+        screen.blit(pygame.transform.scale_by(title, 2), ((screen.get_width()/2) - 16, 10))
         screen.blit(pygame.transform.scale_by(hBar.draw(), 2), (10, 10))
-        screen.blit(pygame.transform.scale_by(cBar.draw(), 2), (screen.get_width() - 142, 10))
-
-        #Check mask overlap
-        pos = player.getPos()
-        pos = (pos[0]-20, pos[1]-20)
-
-        #Display Masks
-        screen.blit(pChar_maskimg, pos)
-
-        #Check mask overlap
-        pos = player.getPos()
-        pos = (pos[0]-20, pos[1]-20)
-        outOfBounds = False
-        if pChar_mask.overlap(boardMask, (pos[0]-1130, pos[1]-570)):
-            outOfBounds = False
-            col = "aliceblue"
-        else: 
-            col = "blue"
-            outOfBounds = True
-
-
-        #Display Masks
-        screen.blit(pChar_maskimg, pos)
-
+        screen.blit(pygame.transform.scale_by(cBar.draw(), 2), (screen.get_width() - 180, 10))
 
         # Draw out all entities
         board.draw(screen)
-        player.draw(screen)
+        screen.blit(player.draw(), (player.getPos()[0] - 16, player.getPos()[1] - 16))
         qix.draw(screen)
         qix.qix_movement(boardMask)
         sparc.draw(screen)
@@ -282,49 +248,24 @@ def mqix():
                     if boardMask.get_at((player.getPos()[0]-1, player.getPos()[1])) == 1:
                         if (pushCoords[0][1] < pushCoords[3][1]):
                             pushCoords.reverse()
-                            board.coords.insert(player.prev+1, pushCoords[0])
-                            board.coords.insert((player.prev + 2), pushCoords[1])
-                            board.coords.insert((player.prev + 3) , pushCoords[2])
-                            board.coords.insert((player.prev + 4), pushCoords[3])
-                            player.prev = board.coords.index(pushCoords[0])
-                            player.next = (player.prev + 1 ) % len(board.coords)
-                            pushCoords.sort()
+                            pushCoords = updateCoords(pushCoords, 0)
                             updateBoundary(pushCoords, boardMask)
                             sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                             
                         else:
-                            board.coords.insert((player.prev + 1), pushCoords[0])
-                            board.coords.insert((player.prev + 2), pushCoords[1])
-                            board.coords.insert((player.prev + 3) , pushCoords[2])
-                            board.coords.insert((player.prev + 4), pushCoords[3])
-
-                            
-                            player.prev = board.coords.index(pushCoords[3])
-                            player.next = (player.prev + 1) % len(board.coords)
-                            pushCoords.sort()
+                            pushCoords = updateCoords(pushCoords, 3)
                             updateBoundary(pushCoords, boardMask)
                             sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
+                    
                     else:
                         if (pushCoords[0][1] < pushCoords[3][1]):
-                            board.coords.insert((player.prev + 1), pushCoords[0])
-                            board.coords.insert((player.prev + 2), pushCoords[1])
-                            board.coords.insert((player.prev + 3) , pushCoords[2])
-                            board.coords.insert((player.prev + 4), pushCoords[3])
-                            player.prev = board.coords.index(pushCoords[3])
-                            player.next = (player.prev + 1) % len(board.coords)
-                            pushCoords.sort()
+                            pushCoords = updateCoords(pushCoords, 3)
                             updateBoundary(pushCoords, boardMask)
                             sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                             
                         else:
                             pushCoords.reverse()
-                            board.coords.insert(player.prev+1, pushCoords[0])
-                            board.coords.insert((player.prev + 2), pushCoords[1])
-                            board.coords.insert((player.prev + 3) , pushCoords[2])
-                            board.coords.insert((player.prev + 4), pushCoords[3])
-                            player.prev = board.coords.index(pushCoords[0])
-                            player.next = (player.prev + 1 ) % len(board.coords)
-                            pushCoords.sort()
+                            pushCoords = updateCoords(pushCoords, 0)
                             updateBoundary(pushCoords, boardMask)
                             sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                 
@@ -342,46 +283,22 @@ def mqix():
                     if boardMask.get_at((player.getPos()[0], player.getPos()[1]-1)) == 1:
                         if (pushCoords[0][0] > pushCoords[3][0]):
                             pushCoords.reverse()
-                            board.coords.insert(player.prev+1, pushCoords[0])
-                            board.coords.insert((player.prev + 2), pushCoords[1])
-                            board.coords.insert((player.prev + 3) , pushCoords[2])
-                            board.coords.insert((player.prev + 4), pushCoords[3])
-                            player.prev = board.coords.index(pushCoords[0])
-                            player.next = (player.prev + 1 ) % len(board.coords)
-                            pushCoords.sort()
-                            updateBoundary(pushCoords, boardMask)
+                            pushCoords = updateCoords(pushCoords, 0)
                             sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                             
                         else:
-                            board.coords.insert((player.prev + 1), pushCoords[0])
-                            board.coords.insert((player.prev + 2), pushCoords[1])
-                            board.coords.insert((player.prev + 3) , pushCoords[2])
-                            board.coords.insert((player.prev + 4), pushCoords[3])
-                            player.prev = board.coords.index(pushCoords[3])
-                            player.next = (player.prev + 1) % len(board.coords)
-                            pushCoords.sort()
+                            pushCoords = updateCoords(pushCoords, 3)
                             updateBoundary(pushCoords, boardMask)
                             sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
+                    
                     else:
                         if (pushCoords[0][0] < pushCoords[3][0]):
                             pushCoords.reverse()
-                            board.coords.insert(player.prev+1, pushCoords[0])
-                            board.coords.insert((player.prev + 2), pushCoords[1])
-                            board.coords.insert((player.prev + 3) , pushCoords[2])
-                            board.coords.insert((player.prev + 4), pushCoords[3])
-                            player.prev = board.coords.index(pushCoords[0])
-                            player.next = (player.prev + 1 ) % len(board.coords)
-                            pushCoords.sort()
+                            pushCoords = updateCoords(pushCoords, 0)
                             updateBoundary(pushCoords, boardMask)
                             sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                         else:
-                            board.coords.insert((player.prev + 1), pushCoords[0])
-                            board.coords.insert((player.prev + 2), pushCoords[1])
-                            board.coords.insert((player.prev + 3) , pushCoords[2])
-                            board.coords.insert((player.prev + 4), pushCoords[3])
-                            player.prev = board.coords.index(pushCoords[3])
-                            player.next = (player.prev + 1) % len(board.coords)
-                            pushCoords.sort()
+                            pushCoords = updateCoords(pushCoords, 3)
                             updateBoundary(pushCoords, boardMask)
                             sparc.setPos(board.coords[sparc.prev][0], board.coords[sparc.prev][1])
                         
@@ -419,15 +336,10 @@ def mqix():
                     
                     player.x += 10
                     left = True
-            
 
-             
-
-        
-        #entity management function
         # flip() the display to put your work on screen
         pygame.display.flip()
-        clock.tick(120) # limits FPS to 120
+        clock.tick(60) # limits FPS to 120
 
     pygame.quit()
 

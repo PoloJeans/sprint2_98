@@ -11,12 +11,13 @@ class Qix(Entity):
 
     def __init__(self, x, y, prev, next):
         super().__init__(x, y, prev, next)
-            
+        self.sprite = pygame.image.load("./entity/assets/qix.png")
+        self.qixSurface = pygame.Surface((32, 32))
         
     def qix_movement(self, board_mask):
         
         #Qix Mask
-        newQix = pygame.image.load("red-circle1.png").convert_alpha()
+        newQix = self.sprite.convert_alpha()
         qix_mask = pygame.mask.from_surface(newQix)
         
         if board_mask.get_at((self.x,self.y)) == 1:
@@ -33,10 +34,7 @@ class Qix(Entity):
         
 
     def draw(self, screen):
-        pygame.draw.circle(screen, "red", (self.x, self.y), 20)
-        newQix = pygame.image.load("red-circle1.png").convert_alpha()
-        qix_mask = pygame.mask.from_surface(newQix)
-        qix_image = qix_mask.to_surface()
-        
-        screen.blit(qix_image, (self.x-20,self.y-20))
+        self.qixSurface.blit(self.sprite, (0, 0))
+        qix_mask = pygame.mask.from_surface(self.qixSurface)
+        screen.blit(self.qixSurface, (self.x-20,self.y-20))
 

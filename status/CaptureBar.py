@@ -11,8 +11,8 @@ class CaptureBar():
         self.threeQuart = pygame.image.load("./status/assets/captureBar3Quarter.png")
         self.full = pygame.image.load("./status/assets/captureBarFull.png")
 
-    def addCaptured(self, value):
-        self.captured += value
+    def setCaptured(self, value):
+        self.captured == value * 100
     
     def getCaptured(self):
         return self.captured
