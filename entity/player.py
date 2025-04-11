@@ -8,6 +8,10 @@ class Player(Entity):
         self.health = 50
         
 
+    def setPrevNext(self, prev, next):
+        #This is mainly used to reset prev,next for sparc when game ends to avoid out-of-bounds error
+        self.prev = prev
+        self.next = next
 
     def setHealth(self, health):
         self.health = health
@@ -17,7 +21,7 @@ class Player(Entity):
     
     def getPos(self):
         return (self.x, self.y)
-
+    
     def draw(self, screen):
         pygame.draw.circle(screen, "red", (self.x, self.y), 20)
 

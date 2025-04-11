@@ -19,6 +19,11 @@ class Sparc(Entity):
         sparc_mask = pygame.mask.from_surface(newSparc)
         sparc_image = sparc_mask.to_surface()
         screen.blit(sparc_image, (self.x-20,self.y-20))
+        
+    def setPrevNext(self, prev, next):
+        #This is mainly used to reset prev,next for sparc when game ends to avoid out-of-bounds error
+        self.prev = prev
+        self.next = next
 
     def sparc_movement(self, board_mask):
         # movement_direction = 1
