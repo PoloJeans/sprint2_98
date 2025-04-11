@@ -29,6 +29,10 @@ def placecholderentityfunction():
     sparc.draw(screen)
     # handles player, qix, and sparc movement on the board, probably branches into collision checking 
     # and incursion
+def updateBoundary(coords, mask):
+    for i in range(coords[0][0] + 1, coords[3][0]):
+        for j in range(coords[0][1]+1, coords[1][1]):
+            mask.set_at((i,j), 0)
 
 def mqix():
     # pygame setup
@@ -96,6 +100,9 @@ def mqix():
                         board.coords.insert((player.prev + 4), pushCoords[3])
                         player.prev = board.coords.index(pushCoords[0])
                         player.next = (player.prev + 1 ) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, boardMask)
+
                         
                     else:
                         board.coords.insert((player.prev + 1), pushCoords[0])
@@ -106,6 +113,8 @@ def mqix():
                         
                         player.prev = board.coords.index(pushCoords[3])
                         player.next = (player.prev + 1) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, boardMask)
                 else:
                     if (pushCoords[0][1] < pushCoords[3][1]):
                         board.coords.insert((player.prev + 1), pushCoords[0])
@@ -114,6 +123,8 @@ def mqix():
                         board.coords.insert((player.prev + 4), pushCoords[3])
                         player.prev = board.coords.index(pushCoords[3])
                         player.next = (player.prev + 1) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, boardMask)
                         
                     else:
                         pushCoords.reverse()
@@ -123,6 +134,8 @@ def mqix():
                         board.coords.insert((player.prev + 4), pushCoords[3])
                         player.prev = board.coords.index(pushCoords[0])
                         player.next = (player.prev + 1 ) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, boardMask)
                 
 
 
@@ -139,6 +152,8 @@ def mqix():
                         board.coords.insert((player.prev + 4), pushCoords[3])
                         player.prev = board.coords.index(pushCoords[0])
                         player.next = (player.prev + 1 ) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, boardMask)
                         
                     else:
                         board.coords.insert((player.prev + 1), pushCoords[0])
@@ -149,6 +164,8 @@ def mqix():
                         
                         player.prev = board.coords.index(pushCoords[3])
                         player.next = (player.prev + 1) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, boardMask)
                 else:
                     if (pushCoords[0][0] < pushCoords[3][0]):
                         pushCoords.reverse()
@@ -158,7 +175,8 @@ def mqix():
                         board.coords.insert((player.prev + 4), pushCoords[3])
                         player.prev = board.coords.index(pushCoords[0])
                         player.next = (player.prev + 1 ) % len(board.coords)
-                        
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, boardMask)
                     else:
                         board.coords.insert((player.prev + 1), pushCoords[0])
                         board.coords.insert((player.prev + 2), pushCoords[1])
@@ -166,6 +184,8 @@ def mqix():
                         board.coords.insert((player.prev + 4), pushCoords[3])
                         player.prev = board.coords.index(pushCoords[3])
                         player.next = (player.prev + 1) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, boardMask)
                         
 
             elif keys[pygame.K_w]:
