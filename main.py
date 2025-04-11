@@ -1,6 +1,7 @@
 # Example file showing a basic pygame "game loop"
 import pygame
 import copy
+import sys
 
 from entity.Entity import *
 from entity.player import *
@@ -91,6 +92,41 @@ def main_menu():
 
         pygame.display.update()
         
+def game_over_screen():
+    pygame.init()
+    pygame.font.init()
+    pygame.mixer.music.load("Undertale Game Over Theme.mp3")
+    pygame.mixer.music.play(100,0,0)
+    
+    while True:
+        screen.fill("black")
+        mousePos = pygame.mouse.get_pos()
+        
+        menuText = getFont(70).render("Game Over", True, "red")
+        menuRect = menuText.get_rect(center=(screen.get_width()/2, 150))
+        
+        playButton = Button(pygame.image.load("./menu/assets/button.png").convert_alpha(), (620,400), "PLAY AGAIN", getFont(28))
+        quitButton = Button(pygame.image.load("./menu/assets/button.png").convert_alpha(), (620,550), "QUIT", getFont(45))
+        
+        screen.blit(menuText, menuRect)
+    
+        for button in [playButton,quitButton]:
+            button.changeColour(mousePos)
+            button.update(screen)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if playButton.checkInput(mousePos):
+                    mqix()
+                if quitButton.checkInput(mousePos):
+                    pygame.quit()
+                    break
+                
+        pygame.display.update()
+                
 def mqix():
     # pygame setup
     pygame.init()
@@ -141,6 +177,22 @@ def mqix():
                 print(board.coords)
                 print(pushCoords)
         screen.fill("black")
+        
+        if (hBar.getHealth() <= 0):
+            #Reset Game Variables
+            running = False
+            push = False
+            left = False
+            cBar.reset()
+            hBar.reset()
+            player.setPrevNext(0,1)
+            sparc.setPrevNext(0,1)
+            board.reset(screen)
+            
+            pygame.mixer.music.stop()
+            game_over_screen()
+        
+            
 
         # screen.blit(hBar.draw(), (10, 10))
         screen.blit(pygame.transform.scale_by(hBar.draw(), 2), (10, 10))
