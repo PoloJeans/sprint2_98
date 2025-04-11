@@ -1,6 +1,6 @@
 # Example file showing a basic pygame "game loop"
 import pygame
-
+import copy
 
 from entity.Entity import *
 from entity.Player import *
@@ -39,6 +39,10 @@ def placecholderentityfunction():
     sparc.draw(screen)
     # handles player, qix, and sparc movement on the board, probably branches into collision checking 
     # and incursion
+def updateBoundary(coords, mask):
+    for i in range(coords[0][0] + 1, coords[3][0]):
+        for j in range(coords[0][1]+1, coords[1][1]):
+            mask.set_at((i,j), 0)
 
 def mqix():
     # pygame setup
@@ -100,7 +104,8 @@ def mqix():
                 print("prev:" + str(player.prev) + ", " + str(board.coords[player.prev][0]) + ", " + str(board.coords[player.prev][1]))
                 print("next:" + str(player.next) + ", " + str(board.coords[player.next][0]) + ", " + str(board.coords[player.next][1]))
                 print("Player Pos: " + str(player.getPos()[0]) + ", " + str(player.getPos()[1]))
-        # pygame.draw.circle(screen, "pink", (screen.get_width() / 2, screen.get_height() - 620), 20)
+                print(board.coords)
+                print(pushCoords)
         screen.fill("black")
 
         # screen.blit(hBar.draw(), (10, 10))
@@ -181,32 +186,153 @@ def mqix():
           sparc.edgeMove(board)
           player.edgeMove(board, keys)
           if keys[pygame.K_SPACE]:
-            first = player.getPos()
+            pushCoords = []
+            #pushCoords.append(player.getPos())
+            lastkey = -1
             push = True
             left = False
 
         else:
             pos = player.getPos()
+            current  = copy.deepcopy(pushCoords)
+            current.append(pos)
+            current.append(pos)
+
+            print(pushCoords)
+            pygame.draw.lines(screen, "green", False, current, 2)
+            
             if board.coords[player.prev][0] == player.getPos()[0] == board.coords[player.next][0] and left:
                 push = False 
                 left = False
+
+                
+                pushCoords.append(player.getPos())
+                if board_mask.get_at((player.getPos()[0]-1, player.getPos()[1])) == 1:
+                    if (pushCoords[0][1] < pushCoords[3][1]):
+                        pushCoords.reverse()
+                        board.coords.insert(player.prev+1, pushCoords[0])
+                        board.coords.insert((player.prev + 2), pushCoords[1])
+                        board.coords.insert((player.prev + 3) , pushCoords[2])
+                        board.coords.insert((player.prev + 4), pushCoords[3])
+                        player.prev = board.coords.index(pushCoords[0])
+                        player.next = (player.prev + 1 ) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, board_mask)
+
+                        
+                    else:
+                        board.coords.insert((player.prev + 1), pushCoords[0])
+                        board.coords.insert((player.prev + 2), pushCoords[1])
+                        board.coords.insert((player.prev + 3) , pushCoords[2])
+                        board.coords.insert((player.prev + 4), pushCoords[3])
+
+                        
+                        player.prev = board.coords.index(pushCoords[3])
+                        player.next = (player.prev + 1) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, board_mask)
+                else:
+                    if (pushCoords[0][1] < pushCoords[3][1]):
+                        board.coords.insert((player.prev + 1), pushCoords[0])
+                        board.coords.insert((player.prev + 2), pushCoords[1])
+                        board.coords.insert((player.prev + 3) , pushCoords[2])
+                        board.coords.insert((player.prev + 4), pushCoords[3])
+                        player.prev = board.coords.index(pushCoords[3])
+                        player.next = (player.prev + 1) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, board_mask)
+                        
+                    else:
+                        pushCoords.reverse()
+                        board.coords.insert(player.prev+1, pushCoords[0])
+                        board.coords.insert((player.prev + 2), pushCoords[1])
+                        board.coords.insert((player.prev + 3) , pushCoords[2])
+                        board.coords.insert((player.prev + 4), pushCoords[3])
+                        player.prev = board.coords.index(pushCoords[0])
+                        player.next = (player.prev + 1 ) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, board_mask)
+                
+
+
             elif board.coords[player.prev][1] == player.getPos()[1] == board.coords[player.next][1] and left:
                 push = False
                 left = False
+                pushCoords.append(player.getPos())
+                if board_mask.get_at((player.getPos()[0], player.getPos()[1]-1)) == 1:
+                    if (pushCoords[0][0] > pushCoords[3][0]):
+                        pushCoords.reverse()
+                        board.coords.insert(player.prev+1, pushCoords[0])
+                        board.coords.insert((player.prev + 2), pushCoords[1])
+                        board.coords.insert((player.prev + 3) , pushCoords[2])
+                        board.coords.insert((player.prev + 4), pushCoords[3])
+                        player.prev = board.coords.index(pushCoords[0])
+                        player.next = (player.prev + 1 ) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, board_mask)
+                        
+                    else:
+                        board.coords.insert((player.prev + 1), pushCoords[0])
+                        board.coords.insert((player.prev + 2), pushCoords[1])
+                        board.coords.insert((player.prev + 3) , pushCoords[2])
+                        board.coords.insert((player.prev + 4), pushCoords[3])
+                        player.prev = board.coords.index(pushCoords[3])
+                        player.next = (player.prev + 1) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, board_mask)
+                else:
+                    if (pushCoords[0][0] < pushCoords[3][0]):
+                        pushCoords.reverse()
+                        board.coords.insert(player.prev+1, pushCoords[0])
+                        board.coords.insert((player.prev + 2), pushCoords[1])
+                        board.coords.insert((player.prev + 3) , pushCoords[2])
+                        board.coords.insert((player.prev + 4), pushCoords[3])
+                        player.prev = board.coords.index(pushCoords[0])
+                        player.next = (player.prev + 1 ) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, board_mask)
+                    else:
+                        board.coords.insert((player.prev + 1), pushCoords[0])
+                        board.coords.insert((player.prev + 2), pushCoords[1])
+                        board.coords.insert((player.prev + 3) , pushCoords[2])
+                        board.coords.insert((player.prev + 4), pushCoords[3])
+                        player.prev = board.coords.index(pushCoords[3])
+                        player.next = (player.prev + 1) % len(board.coords)
+                        pushCoords.sort()
+                        updateBoundary(pushCoords, board_mask)
+                        
+
             elif keys[pygame.K_w]:
                 if board_mask.get_at((pos[0], pos[1] - 10 )) == 1:
+                    if lastkey != 0:
+                        print(0)
+                        pushCoords.append(player.getPos())
+                    lastkey = 0
                     player.y -= 10
                     left = True
             elif keys[pygame.K_s]:
                 if board_mask.get_at((pos[0], pos[1] + 10 )) == 1:
+                    if lastkey != 1:
+                        print(1)
+                        pushCoords.append(player.getPos())
+                    lastkey = 1
                     player.y += 10
                     left = True
             elif keys[pygame.K_a]:
                 if board_mask.get_at((pos[0] -10 , pos[1])) == 1:
+                    if lastkey != 2:
+                        print(2)
+                        pushCoords.append(player.getPos())
+                    lastkey = 2
                     player.x -= 10
                     left = True
             elif keys[pygame.K_d]:
                 if board_mask.get_at((pos[0] + 10 , pos[1])) == 1:
+                    if lastkey != 3:
+                        print(3)
+                        pushCoords.append(player.getPos())
+                    lastkey = 3
+                    
                     player.x += 10
                     left = True
             
