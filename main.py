@@ -159,7 +159,7 @@ def mqix():
         pos = (pos[0]-20, pos[1]-20)
         outOfBounds = False
         if pChar_mask.overlap(boardMask, (pos[0]-600, pos[1]-680)):
-            print("In")
+            
             outOfBounds = False
             col = "aliceblue"
         else: 
@@ -225,8 +225,7 @@ def mqix():
         #Trigger for push
         
 
-        print("Prev: ",board.coords[player.prev][0],",", board.coords[player.prev][1])
-        print("Next: ", board.coords[player.next][0],",", board.coords[player.next][1])
+        
         
         if push == False:
           sparc.edgeMove(board)
@@ -244,7 +243,7 @@ def mqix():
             current.append(pos)
             current.append(pos)
 
-            print(pushCoords)
+            
             pygame.draw.lines(screen, "green", False, current, 2)
             
             if board.coords[player.prev][0] == player.getPos()[0] == board.coords[player.next][0] and left:
@@ -360,7 +359,7 @@ def mqix():
             elif keys[pygame.K_w]:
                 if boardMask.get_at((pos[0], pos[1] - 10 )) == 1:
                     if lastkey != 0:
-                        print(0)
+                        
                         pushCoords.append(player.getPos())
                     lastkey = 0
                     player.y -= 10
@@ -368,7 +367,7 @@ def mqix():
             elif keys[pygame.K_s]:
                 if boardMask.get_at((pos[0], pos[1] + 10 )) == 1:
                     if lastkey != 1:
-                        print(1)
+                        
                         pushCoords.append(player.getPos())
                     lastkey = 1
                     player.y += 10
@@ -376,7 +375,7 @@ def mqix():
             elif keys[pygame.K_a]:
                 if boardMask.get_at((pos[0] -10 , pos[1])) == 1:
                     if lastkey != 2:
-                        print(2)
+                        
                         pushCoords.append(player.getPos())
                     lastkey = 2
                     player.x -= 10
@@ -384,7 +383,7 @@ def mqix():
             elif keys[pygame.K_d]:
                 if boardMask.get_at((pos[0] + 10 , pos[1])) == 1:
                     if lastkey != 3:
-                        print(3)
+                        
                         pushCoords.append(player.getPos())
                     lastkey = 3
                     
