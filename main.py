@@ -148,12 +148,14 @@ def mqix():
 
 
         # Draw out all entities
+        #boardMask.to_surface(screen, setcolor=(0, 255, 0, 255)) 
         board.draw(screen)
         player.draw(screen)
         qix.draw(screen)
         qix.qix_movement(boardMask)
         sparc.draw(screen)
         sparc.sparc_movement(boardMask)
+        
         
 
         
@@ -205,7 +207,7 @@ def mqix():
                 push = False 
                 left = False
                 if len(pushCoords) != 3:
-                    player.setPos(pushCoords[0])
+                    player.setPos(pushCoords[0][0], pushCoords[0][1])
                     pushCoords = []
                 else:
                 
@@ -263,7 +265,7 @@ def mqix():
                 left = False
                 
                 if len(pushCoords) != 3:
-                    player.setPos(pushCoords[0])
+                    player.setPos(pushCoords[0][0], pushCoords[0][1])
                     pushCoords = []
                 else:
                     pushCoords.append(player.getPos())
