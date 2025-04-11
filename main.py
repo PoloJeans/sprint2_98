@@ -209,6 +209,8 @@ def mqix():
         # Collision checker
         if player.collision(sparc, qix, push) :
             hBar.decHealth()
+            pushCoords =[]
+            push  = False
             if hBar.getHealth() == 0:
                 # trigger game over
                 pass
