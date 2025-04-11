@@ -181,7 +181,7 @@ def mqix():
                 # trigger game over
                 pass
             player.setPos(100, (screen.get_height() - 100)) #Bottom left corner
-            #player.setPrevNext(0, 1)
+            player.setPrevNext(0, 1)
             #sparc.setPrevNext(2,3)
             qix.setPos(screen.get_width() / 2, screen.get_height() / 2)
             #sparc.setPos(screen.get_width() - 100, screen.get_height() - 620)
