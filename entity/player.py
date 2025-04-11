@@ -5,22 +5,16 @@ from entity.Entity import Entity
 class Player(Entity):
     def __init__(self, x, y, prev, next):
         super().__init__(x, y, prev, next)
-        self.health = 50
-        
+        self.sprite = pygame.image.load("./entity/assets/player.png")
+        self.playerSurface = pygame.Surface((32, 32))
 
-
-    def setHealth(self, health):
-        self.health = health
-
-    def getHealth(self):
-        return self.health
-    
     def getPos(self):
         return (self.x, self.y)
 
-    def draw(self, screen):
-        pygame.draw.circle(screen, "red", (self.x, self.y), 20)
-
+    def draw(self):
+        self.playerSurface.blit(self.sprite, (0, 0))
+        return self.playerSurface
+    
     def collision(self, sparc, qix, push):
         playerPos = self.getPos()
         sparcPos = sparc.getPos()

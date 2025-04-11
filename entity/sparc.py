@@ -10,21 +10,20 @@ class Sparc(Entity):
         else:
             self.direction = "left"
         self.horizontal = True
-
+        self.sprite = pygame.image.load("./entity/assets/sparx.png")
+        self.sparcSurface = pygame.Surface((32, 32))
 
     def draw(self, screen):
-        pygame.draw.circle(screen, "blue", (self.x, self.y), 20)
+        self.sparcSurface.blit(self.sprite, (0, 0))
         #Sparc Mask
-        newSparc = pygame.image.load("red-circle1.png").convert_alpha()
-        sparc_mask = pygame.mask.from_surface(newSparc)
-        sparc_image = sparc_mask.to_surface()
-        screen.blit(sparc_image, (self.x-20,self.y-20))
+        sparc_mask = pygame.mask.from_surface(self.sparcSurface)
+        screen.blit(self.sparcSurface, (self.x-20,self.y-20))
 
     def sparc_movement(self, board_mask):
         # movement_direction = 1
         
         #Sparc Mask
-        newSparc = pygame.image.load("red-circle1.png").convert_alpha()
+        newSparc = self.sprite.convert_alpha()
         sparc_mask = pygame.mask.from_surface(newSparc)
         sparc_image = sparc_mask.to_surface()
         
