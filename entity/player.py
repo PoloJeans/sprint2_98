@@ -8,6 +8,7 @@ class Player(Entity):
         self.health = 50
         
 
+
     def setHealth(self, health):
         self.health = health
 

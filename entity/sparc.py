@@ -11,6 +11,7 @@ class Sparc(Entity):
             self.direction = "left"
         self.horizontal = True
 
+
     def draw(self, screen):
         pygame.draw.circle(screen, "blue", (self.x, self.y), 20)
         #Sparc Mask

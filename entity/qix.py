@@ -6,6 +6,7 @@ class Qix(Entity):
     direction_x = 5
     direction_y = 5
     
+    
     #board_w, board_h = top left of green board
 
     def __init__(self, x, y, prev, next):

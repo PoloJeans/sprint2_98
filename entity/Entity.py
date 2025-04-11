@@ -40,3 +40,4 @@ class Entity():
     def reset(self):
         self.x
         self.y
+        
