@@ -4,7 +4,7 @@ import copy
 
 from entity.Entity import *
 from entity.player import *
-from entity.board import *
+from entity.Board import *
 from entity.qix import *
 from entity.sparc import *
 
@@ -47,6 +47,13 @@ def updateBoundary(coords, mask):
 def getFont(size):
     return pygame.font.Font("./menu/assets/font.ttf", size)
 
+def getCapturedArea(boardMask, area):
+    #Given a board mask & its area, 
+    #return the % of captured bits as a float from 0-1
+    capturedArea = area - boardMask.count()
+    return round((capturedArea/area),2)
+    
+
 def main_menu():
     pygame.init()
     pygame.font.init()
@@ -83,7 +90,7 @@ def main_menu():
                     break
 
         pygame.display.update()
-
+        
 def mqix():
     # pygame setup
     pygame.init()
@@ -98,6 +105,8 @@ def mqix():
     for i in range (topleft[0], topright[0] + 1):
         for j in range(topleft[1], botleft[1]+1):
             boardMask.set_at((i,j), 1)
+            
+    boardMaskArea = boardMask.count() # Number of 1 bits in mask (USE FOR getCapturedArea() )
 
     # Player character
     pChar = pygame.image.load("red-circle1.png").convert_alpha()
@@ -158,8 +167,6 @@ def mqix():
 
         #Display Masks
         screen.blit(pChar_maskimg, pos)
-        #tempBoard.fill(col)
-        #screen.blit(tempBoard, (100,100))
 
 
         # Draw out all entities
@@ -186,6 +193,8 @@ def mqix():
             qix.setPos(screen.get_width() / 2, screen.get_height() / 2)
             #sparc.setPos(screen.get_width() - 100, screen.get_height() - 620)
 
+
+        #getUpdatedArea(boardMask, boardMaskArea)
 
         sparc.edgeMove(board)
         #Trigger for push
