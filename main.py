@@ -14,23 +14,23 @@ from status.CaptureBar import *
 import pygame.image
 
 
-screen = pygame.display.set_mode((1280, 720), pygame.SHOWN | pygame.RESIZABLE)
-
+screen = pygame.display.set_mode((640, 720), pygame.SHOWN | pygame.RESIZABLE)
+botleft = (100, screen.get_height() - 100)
+botright = (screen.get_width() - 100, screen.get_height() - 100)
+topright = (screen.get_width() - 100, 100)
+topleft = (100, 100)
 #Initialise the board using a list of tuple coordinates (x,y)
 board = Board([(100, screen.get_height() - 100),
-            (150, screen.get_height() - 100),
-            (150, screen.get_height() - 300),
-            (300, screen.get_height() - 300),
-            (300, screen.get_height() - 100),
             (screen.get_width() - 100, screen.get_height() - 100),
-            (screen.get_width() - 100, 100), (100, 100)], screen)
+            (screen.get_width() - 100, 100), 
+            (100, 100)], screen)
 hBar = HealthBar()
 cBar = CaptureBar()
 player = Player(100, (screen.get_height() - 100), 0, 1)
 qix = Qix(screen.get_width() / 2, screen.get_height() / 2, 0, 1)
 
 # next and prev value for sparc is currently hardcoded to the board with an incursion already present
-sparc = Sparc(screen.get_width() / 2, screen.get_height() - 620, 6, 7)
+sparc = Sparc(screen.get_width() / 2, screen.get_height() - 620, 2, 3)
 
 
 def placecholderentityfunction():
@@ -46,36 +46,39 @@ def mqix():
     running = True
     clock = pygame.time.Clock()
     push = False
-    
     left = False
+    
+    board_mask = pygame.mask.Mask((screen.get_width(), screen.get_height()))
+    for i in range (topleft[0], topright[0] + 1):
+        for j in range(topleft[1], botleft[1]+1):
+            board_mask.set_at((i,j), 1)
 
     # Player character
     pChar = pygame.image.load("red-circle1.png").convert_alpha()
     #pChar_rect = pChar.get_rect()
     pChar_mask = pygame.mask.from_surface(pChar)
     pChar_maskimg = pChar_mask.to_surface()
-
-    tempBoard = pygame.Surface((1084,524))
-    tempBoard.fill("blue")
-    board_mask = pygame.mask.from_surface(tempBoard)
     
 
     #Check mask overlap
     pos = player.getPos()
     pos = (pos[0]-20, pos[1]-20)
-    outOfBounds = False
-    if pChar_mask.overlap(board_mask, (pos[0]-1130, pos[1]-570)):
-        outOfBounds = False
-        col = "aliceblue"
-    else: 
-        col = "blue"
-        outOfBounds = True
+    #outOfBounds = False
+    #if pChar_mask.overlap(board_mask, (pos[0]-1130, pos[1]-570)):
+    #    outOfBounds = False
+    #    col = "aliceblue"
+    #else: 
+    #    col = "blue"
+    #    outOfBounds = True
 
 
     #Display Masks
     screen.blit(pChar_maskimg, pos)
-    tempBoard.fill(col)
-    screen.blit(tempBoard, (100,100))
+    board_surface = board_mask.to_surface(
+        setcolor=(255, 255, 255),  # White for visible mask areas
+        unsetcolor=(0, 0, 0, 0)    # Transparent for mask=0 areas
+    )
+    screen.blit(board_surface, (100,100))
 
 
     # Player character
@@ -84,9 +87,9 @@ def mqix():
     pChar_mask = pygame.mask.from_surface(pChar)
     pChar_maskimg = pChar_mask.to_surface()
 
-    tempBoard = pygame.Surface((1084,524))
-    tempBoard.fill("blue")
-    board_mask = pygame.mask.from_surface(tempBoard)
+    #tempBoard = pygame.Surface((1084,524))
+    #tempBoard.fill("blue")
+    #board_mask_surface = pygame.mask.from_surface(tempBoard)
 
 
     #Run game
@@ -108,7 +111,8 @@ def mqix():
         pos = player.getPos()
         pos = (pos[0]-20, pos[1]-20)
         outOfBounds = False
-        if pChar_mask.overlap(board_mask, (pos[0]-1130, pos[1]-570)):
+        if pChar_mask.overlap(board_mask, (pos[0]-600, pos[1]-680)):
+            print("In")
             outOfBounds = False
             col = "aliceblue"
         else: 
@@ -117,8 +121,8 @@ def mqix():
 
         #Display Masks
         screen.blit(pChar_maskimg, pos)
-        tempBoard.fill("blue")
-        screen.blit(tempBoard, (100,100))
+        #tempBoard.fill("blue")
+        #screen.blit(tempBoard, (100,100))
 
         #Check mask overlap
         pos = player.getPos()
@@ -134,8 +138,8 @@ def mqix():
 
         #Display Masks
         screen.blit(pChar_maskimg, pos)
-        tempBoard.fill(col)
-        screen.blit(tempBoard, (100,100))
+        #tempBoard.fill(col)
+        #screen.blit(tempBoard, (100,100))
 
 
         # Draw out all entities
@@ -159,11 +163,11 @@ def mqix():
             if hBar.getHealth() == 0:
                 # trigger game over
                 pass
-            player.setPos(100, (screen.get_height() - 100))
+            player.setPos(100, (screen.get_height() - 100)) #Bottom left corner
             player.setPrevNext(0, 1)
-            sparc.setPrevNext(6,7)
+            sparc.setPrevNext(2,3)
             qix.setPos(screen.get_width() / 2, screen.get_height() / 2)
-            sparc.setPos(screen.get_width() / 2, screen.get_height() - 620)
+            sparc.setPos(screen.get_width() - 100, screen.get_height() - 620)
 
 
 
@@ -182,7 +186,7 @@ def mqix():
             left = False
 
         else:
-            print(push)
+            pos = player.getPos()
             if board.coords[player.prev][0] == player.getPos()[0] == board.coords[player.next][0] and left:
                 push = False 
                 left = False
@@ -190,17 +194,21 @@ def mqix():
                 push = False
                 left = False
             elif keys[pygame.K_w]:
-                player.y -= 10
-                left = True
+                if board_mask.get_at((pos[0], pos[1] - 10 )) == 1:
+                    player.y -= 10
+                    left = True
             elif keys[pygame.K_s]:
-                player.y += 10
-                left = True
+                if board_mask.get_at((pos[0], pos[1] + 10 )) == 1:
+                    player.y += 10
+                    left = True
             elif keys[pygame.K_a]:
-                player.x -= 10
-                left = True
+                if board_mask.get_at((pos[0] -10 , pos[1])) == 1:
+                    player.x -= 10
+                    left = True
             elif keys[pygame.K_d]:
-                player.x += 10
-                left = True
+                if board_mask.get_at((pos[0] + 10 , pos[1])) == 1:
+                    player.x += 10
+                    left = True
             
 
              
