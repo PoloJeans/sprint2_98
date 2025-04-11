@@ -3,10 +3,10 @@ import pygame
 import copy
 
 from entity.Entity import *
-from entity.Player import *
-from entity.Board import *
-from entity.Qix import *
-from entity.Sparc import *
+from entity.player import *
+from entity.board import *
+from entity.qix import *
+from entity.sparc import *
 
 from status.HealthBar import *
 from status.CaptureBar import *
@@ -187,10 +187,10 @@ def mqix():
             sparc.setPos(screen.get_width() - 100, screen.get_height() - 620)
 
 
-
+        sparc.edgeMove(board)
         #Trigger for push
         if push == False:
-          sparc.edgeMove(board)
+          
           player.edgeMove(board, keys)
           if keys[pygame.K_SPACE]:
             pushCoords = []
@@ -199,6 +199,7 @@ def mqix():
             left = False
 
         else:
+            
             pos = player.getPos()
             current  = copy.deepcopy(pushCoords)
             current.append(pos)
