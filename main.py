@@ -248,12 +248,13 @@ def mqix():
             if board.coords[player.prev][0] == player.getPos()[0] == board.coords[player.next][0] and left:
                 push = False 
                 left = False
-                if len(pushCoords) != 3:
+                pushCoords.append(player.getPos())
+                if len(pushCoords) != 4 or pushCoords[3] == board.coords[player.next] or pushCoords[3] == board.coords[player.prev] or pushCoords[0] == board.coords[player.prev] or pushCoords[0] == board.coords[player.prev]:
                     player.setPos(pushCoords[0][0], pushCoords[0][1])
                     pushCoords = []
                 else:
                 
-                    pushCoords.append(player.getPos())
+                    
                     if boardMask.get_at((player.getPos()[0]-1, player.getPos()[1])) == 1:
                         if (pushCoords[0][1] < pushCoords[3][1]):
                             pushCoords.reverse()
@@ -305,12 +306,12 @@ def mqix():
             elif board.coords[player.prev][1] == player.getPos()[1] == board.coords[player.next][1] and left:
                 push = False
                 left = False
-                
-                if len(pushCoords) != 3:
+                pushCoords.append(player.getPos())
+                if len(pushCoords) != 4 or pushCoords[3] == board.coords[player.next] or pushCoords[3] == board.coords[player.prev] or pushCoords[0] == board.coords[player.prev] or pushCoords[0] == board.coords[player.prev]:
                     player.setPos(pushCoords[0][0], pushCoords[0][1])
                     pushCoords = []
                 else:
-                    pushCoords.append(player.getPos())
+                    
                     if boardMask.get_at((player.getPos()[0], player.getPos()[1]-1)) == 1:
                         if (pushCoords[0][0] > pushCoords[3][0]):
                             pushCoords.reverse()
