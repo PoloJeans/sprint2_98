@@ -202,7 +202,6 @@ def mqix():
             #sparc.setPos(screen.get_width() - 100, screen.get_height() - 620)
 
         #getUpdatedArea(boardMask, boardMaskArea)
-        print(getCapturedArea(boardMask, boardMaskArea))
         cBar.setCaptured(getCapturedArea(boardMask, boardMaskArea)*100)
 
         sparc.edgeMove(board)

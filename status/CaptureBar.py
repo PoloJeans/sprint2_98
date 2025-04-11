@@ -12,7 +12,6 @@ class CaptureBar():
 
     def setCaptured(self, value):
         self.captured = int(value)
-        print(self.captured)
     
     def getCaptured(self):
         return self.captured
